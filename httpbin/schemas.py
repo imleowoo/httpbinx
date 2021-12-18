@@ -63,7 +63,7 @@ class RequestAttrs:
         return dict(self.request.headers)
 
     @property
-    def client_host(self):
+    def client_host(self) -> str:
         """request client host."""
         return self.request.client.host
 
@@ -76,6 +76,11 @@ class RequestAttrs:
     def json(self):
         """request json."""
         return None
+
+    @property
+    def user_agent(self) -> str:
+        """request headers User-Agent"""
+        return self.request.headers.get('User-Agent')
 
 
 class RequestDictModel(BaseModel):

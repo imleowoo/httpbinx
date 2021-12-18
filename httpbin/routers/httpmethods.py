@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""HTTP Methods"""
 from fastapi import APIRouter
 from starlette.requests import Request
 

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from starlette.requests import Request
 
 from httpbin.helpers import get_request_attrs
+from httpbin.schemas import RequestAttrs
 
 router = APIRouter()
 
@@ -24,4 +25,7 @@ async def ip(request: Request):
 
 @router.get('/user-agent')
 async def user_agent(request: Request):
-    pass
+    # TODO show_env
+    return {
+        'user-agent': RequestAttrs(request).user_agent
+    }
