@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 """Dynamic Data"""
 import asyncio
 import base64
 import uuid
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter
+from fastapi import Path
 from fastapi.responses import PlainTextResponse
 from starlette import status
 from starlette.requests import Request
@@ -18,11 +20,11 @@ router = APIRouter()
 async def decode_base64(value: str):
     encoded: bytes = value.encode('utf-8')
     try:
-        decoded = base64.urlsafe_b64decode(encoded).decode("utf-8")
+        decoded = base64.urlsafe_b64decode(encoded).decode('utf-8')
         return PlainTextResponse(content=decoded)
     except Exception as err:
         return PlainTextResponse(
-            content=f"Incorrect Base64 data try: {value}, err_msg: {err}",
+            content=f'Incorrect Base64 data try: {value}, err_msg: {err}',
             status_code=status.HTTP_400_BAD_REQUEST
         )
 
@@ -33,13 +35,20 @@ async def random_bytes(n: int):
     pass
 
 
-@router.api_route('/delay/{delay}', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "TRACE"])
-async def delay_response(*, delay: int = Path(..., ge=0, le=10), request: Request):
+@router.api_route(
+    '/delay/{delay}',
+    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']
+)
+async def delay_response(
+        *,
+        delay: int = Path(..., ge=0, le=10),
+        request: Request
+):
     """Returns a delayed response."""
     await asyncio.sleep(delay)
     return get_request_attrs(
         request,
-        keys=("url", "args", "form", "data", "origin", "headers", "files")
+        keys=('url', 'args', 'form', 'data', 'origin', 'headers', 'files')
     )
 
 
@@ -61,13 +70,15 @@ async def link_page(
 
 @router.get('/range/{numbytes}')
 async def range_request(numbytes: int):
-    """Streams n random bytes generated with given seed, at given chunk size per packet."""
+    """Streams n random bytes generated with given seed,
+    at given chunk size per packet."""
     pass
 
 
 @router.get('/stream-bytes/{n}')
 async def stream_random_bytes(n: int):
-    """Streams n random bytes generated with given seed, at given chunk size per packet."""
+    """Streams n random bytes generated with given seed,
+    at given chunk size per packet."""
     pass
 
 
