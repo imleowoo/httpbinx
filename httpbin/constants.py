@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# flake8: noqa
 REDIRECT_LOCATION = '/redirect/1'
 
 ACCEPTED_MEDIA_TYPES = [
@@ -18,4 +20,17 @@ ASCII_ART = """
       |       ;/
       \_     _/
         `\"\"\"`
+"""
+
+ANGRY_ASCII = """
+          .-''''''-.
+        .' _      _ '.
+       /   O      O   \\
+      :                :
+      |                |
+      :       __       :
+       \  .-"`  `"-.  /
+        '.          .'
+          '-......-'
+     YOU SHOULDN'T BE HERE
 """

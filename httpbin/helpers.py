@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
 import json
 
+from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette import status
 
-from httpbin.schemas import RequestDictModel, RequestAttrs
-from httpbin.constants import REDIRECT_LOCATION, ACCEPTED_MEDIA_TYPES, ASCII_ART
+from httpbin.constants import ACCEPTED_MEDIA_TYPES
+from httpbin.constants import ASCII_ART
+from httpbin.constants import REDIRECT_LOCATION
+from httpbin.schemas import RequestAttrs
+from httpbin.schemas import RequestDictModel
 
 
 def get_request_attrs(request: Request, keys, **extras) -> dict:
@@ -26,6 +30,7 @@ def get_request_attrs(request: Request, keys, **extras) -> dict:
         json_data=request_attrs.json,
         method=request_attrs.method
     ).dict(include=set(keys))
+    request_dict.update(extras)
     return request_dict
 
 
@@ -54,7 +59,9 @@ def status_code(code: int):
             'accept': ACCEPTED_MEDIA_TYPES
         }),
             headers={'Content-Type': 'application/json'}),
-        status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}),
+        status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(
+            headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}
+        ),
         status.HTTP_408_REQUEST_TIMEOUT: dict(  # I'm a teapot!
             data=ASCII_ART,
             headers={'x-more-info': 'http://tools.ietf.org/html/rfc2324'}
