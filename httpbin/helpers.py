@@ -3,6 +3,7 @@ import json
 
 from starlette import status
 from starlette.requests import Request
+from starlette.responses import JSONResponse
 from starlette.responses import Response
 
 from httpbin.constants import ACCEPTED_MEDIA_TYPES
@@ -34,7 +35,13 @@ def get_request_attrs(request: Request, keys, **extras) -> dict:
     return request_dict
 
 
-def status_code(code: int):
+def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
+    """Return json response object of give keys about request attributes"""
+    attrs = get_request_attrs(request, keys, **extras)
+    return JSONResponse(content=attrs)
+
+
+def status_code_response(code: int):
     """Returns response object of given status code."""
     # sample redirect
     redirect = dict(headers=dict(location=REDIRECT_LOCATION))
