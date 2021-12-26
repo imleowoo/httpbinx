@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import random
+import re
 
 from starlette import status
 from starlette.requests import Request
@@ -42,7 +43,7 @@ def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
     return JSONResponse(content=attrs)
 
 
-def status_code_response(code: int):
+def status_code_response(code: int) -> Response:
     """Returns response object of given status code."""
     # sample redirect
     redirect = dict(headers=dict(location=REDIRECT_LOCATION))
@@ -102,3 +103,17 @@ def weighted_choice(choices):
     values, weights = zip(*choices)
     value = random.choices(population=values, weights=weights, k=1)[0]
     return value
+
+
+def parse_multi_value_header(header_value: str) -> list:
+    """Break apart an HTTP header string that is potentially a quoted,
+    comma separated list as used in entity headers in RFC2616."""
+    parsed_parts = []
+    if header_value:
+        parts = header_value.split(',')
+        for part in parts:
+            # TODO
+            match = re.search(r'\s*(W/)?\"?([^"]*)\"?\s*', part)
+            if match is not None:
+                parsed_parts.append(match.group(2))
+    return parsed_parts
