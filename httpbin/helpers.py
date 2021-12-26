@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import random
 
 from starlette import status
 from starlette.requests import Request
@@ -69,7 +70,7 @@ def status_code_response(code: int):
         status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(
             headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}
         ),
-        status.HTTP_408_REQUEST_TIMEOUT: dict(  # I'm a teapot!
+        status.HTTP_418_IM_A_TEAPOT: dict(  # I'm a teapot!
             data=ASCII_ART,
             headers={'x-more-info': 'http://tools.ietf.org/html/rfc2324'}
         ),
@@ -77,5 +78,27 @@ def status_code_response(code: int):
 
     resp = Response(status_code=code)
     if code in code_map:
-        pass
+        m = code_map[code]
+        if 'data' in m:
+            resp.body = resp.render(m['data'])
+        if 'headers' in m:
+            resp.init_headers(m['headers'])
+
     return resp
+
+
+def check_basic_auth(request: Request, user: str, password: str):
+    """Checks user authentication using HTTP Basic Auth."""
+    pass
+
+
+def weighted_choice(choices):
+    """Returns a value from choices chosen by weighted random selection
+    choices should be a list of (value, weight) tuples.
+
+    Examples:
+        weighted_choice([('val1', 5), ('val2', 0.3), ('val3', 1)])
+    """
+    values, weights = zip(*choices)
+    value = random.choices(population=values, weights=weights, k=1)[0]
+    return value

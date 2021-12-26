@@ -7,4 +7,8 @@ app = FastAPI(
     title='FastAPI-httpbin'
 )
 
+# app.add_middleware(
+#     AuthenticationMiddleware,
+#     backend=AuthenticationBackend()
+# )
 app.include_router(router=router, prefix='/api')
