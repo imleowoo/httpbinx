@@ -34,3 +34,7 @@ ANGRY_ASCII = """
           '-......-'
      YOU SHOULDN'T BE HERE
 """
+
+ROBOT_TXT = """User-agent: *
+Disallow: /deny
+"""
