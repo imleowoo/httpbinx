@@ -3,21 +3,36 @@
 from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 from starlette import status
+from starlette.requests import Request
 
 from httpbin.constants import ANGRY_ASCII
+from httpbin.helpers import request_attrs_response
+from httpbin.schemas import RequestDictModel
 
 router = APIRouter()
 
 
-@router.get('/brotli')
-async def brotli_encoded_content():
-    """Returns Brotli-encoded data."""
-    pass
+@router.get(
+    '/brotli',
+    response_model=RequestDictModel,
+    description='Returns Brotli-encoded data.',
+    response_description='Brotli-encoded data.'
+)
+async def brotli_encoded_content(request: Request):
+    return request_attrs_response(
+        request,
+        keys=('origin', 'headers', 'method'),
+        brotli=True
+    )
 
 
-@router.get('/deflate')
+@router.get(
+    '/deflate',
+    response_model=RequestDictModel,
+    description='Returns Deflate-encoded data.',
+    response_description='Defalte-encoded data.'
+)
 async def deflate_encoded_content():
-    """Returns Deflate-encoded data."""
     pass
 
 
