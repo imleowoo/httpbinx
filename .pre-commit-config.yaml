@@ -26,4 +26,4 @@ repos:
     rev: 5.10.1
     hooks:
       - id: isort
-        args: [ --force-sort-within-sections,--force-single-line-imports ]
+        args: [ --force-sort-within-sections, --force-single-line-imports ]
