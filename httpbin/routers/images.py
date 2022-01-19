@@ -1,37 +1,86 @@
 # -*- coding: utf-8 -*-
 """Images"""
+from os import path
 
 from fastapi import APIRouter
 from starlette.requests import Request
+from starlette.responses import FileResponse
+from starlette.status import HTTP_406_NOT_ACCEPTABLE
 
-router = APIRouter()
+from httpbin.helpers import status_code_response
+from httpbin.utils import get_templates_abspath
+
+images_path = get_templates_abspath('images')
 
 
-@router.get('/image')
+class ImageResponse(FileResponse):
+    """set response headers Content-Type: image/* """
+    media_type = 'image/*'
+
+
+router = APIRouter(default_response_class=ImageResponse)
+
+
+@router.get(
+    '/image',
+    response_class=ImageResponse,
+    description='Returns a simple image of the type suggest by to '
+                'Accept header.',
+    response_description='An image.'
+)
 async def image(request: Request):
-    """Returns a simple image of the type suggest by the Accept header."""
-    pass
+    accept = request.headers.get('accept')
+    if not accept:
+        # Default media type to png
+        return await image_png()
+    accept = accept.lower()
+    if 'image/webp' in accept:
+        return await image_webp()
+    elif 'image/svg+xml' in accept:
+        return await image_svg()
+    elif 'image/jpeg' in accept:
+        return await image_jpeg()
+    elif 'image/png' in accept or 'image/*' in accept:
+        return await image_png()
+    else:
+        return status_code_response(HTTP_406_NOT_ACCEPTABLE)
 
 
-@router.get('/image/png')
+@router.get(
+    '/image/png',
+    response_class=ImageResponse,
+    description='Returns a simple PNG image.',
+    response_description='A PNG image.'
+)
 async def image_png():
-    """Returns a simple PNG image."""
-    pass
+    return ImageResponse(path=path.join(images_path, 'pig_icon.png'))
 
 
-@router.get('/image/jpeg')
+@router.get(
+    '/image/jpeg',
+    response_class=ImageResponse,
+    description='Returns a simple JPEG image.',
+    response_description='A JPEG image.'
+)
 async def image_jpeg():
-    """Returns a simple JPEG image."""
-    pass
+    return ImageResponse(path=path.join(images_path, 'jackal.jpg'))
 
 
-@router.get('/image/webp')
+@router.get(
+    '/image/webp',
+    response_class=ImageResponse,
+    description='Returns a simple WEBP image.',
+    response_description='A WEBP image.'
+)
 async def image_webp():
-    """Returns a simple WEBP image."""
-    pass
+    return ImageResponse(path=path.join(images_path, 'wolf_1.webp'))
 
 
-@router.get('/image/svg')
+@router.get(
+    '/image/svg',
+    response_class=ImageResponse,
+    description='Returns a simple SVG image.',
+    response_description='An SVG image.'
+)
 async def image_svg():
-    """Returns a simple SVG image."""
-    pass
+    return ImageResponse(path=path.join(images_path, 'svg_logo.svg'))
