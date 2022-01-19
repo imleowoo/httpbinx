@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+
 from fastapi import APIRouter
 
 from httpbin.routers import anything
 from httpbin.routers import auth
 from httpbin.routers import dynamicdata
 from httpbin.routers import httpmethods
+from httpbin.routers import images
 from httpbin.routers import redirects
 from httpbin.routers import responseformats
 from httpbin.routers import statuscodes
@@ -22,3 +24,4 @@ router.include_router(anything.router, tags=['Anything'])
 router.include_router(auth.router, tags=['Auth'])
 router.include_router(statuscodes.router, tags=['Status codes'])
 router.include_router(anything.router, tags=['Anything'])
+router.include_router(images.router, tags=['Images'])
