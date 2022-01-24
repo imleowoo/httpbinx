@@ -31,7 +31,8 @@ def get_request_attrs(request: Request, keys, **extras) -> dict:
         origin=request_attrs.client_host,
         files=request_attrs.files,
         json_data=request_attrs.json,
-        method=request_attrs.method
+        method=request_attrs.method,
+        cookies=request_attrs.cookies
     ).dict(include=set(keys))
     request_dict.update(extras)
     return request_dict

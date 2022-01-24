@@ -4,6 +4,7 @@ from fastapi import APIRouter
 
 from httpbin.routers import anything
 from httpbin.routers import auth
+from httpbin.routers import cookies
 from httpbin.routers import dynamicdata
 from httpbin.routers import httpmethods
 from httpbin.routers import images
@@ -25,3 +26,4 @@ router.include_router(auth.router, tags=['Auth'])
 router.include_router(statuscodes.router, tags=['Status codes'])
 router.include_router(anything.router, tags=['Anything'])
 router.include_router(images.router, tags=['Images'])
+router.include_router(cookies.router, tags=['Cookies'])
