@@ -10,6 +10,18 @@ ACCEPTED_MEDIA_TYPES = [
     'image/*'
 ]
 
+ENV_COOKIES = (
+    '_gauges_unique',
+    '_gauges_unique_year',
+    '_gauges_unique_month',
+    '_gauges_unique_day',
+    '_gauges_unique_hour',
+    '__utmz',
+    '__utma',
+    '__utmb',
+)
+
+
 ASCII_ART = """
     -=[ teapot ]=-
 

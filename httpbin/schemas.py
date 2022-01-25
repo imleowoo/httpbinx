@@ -88,6 +88,11 @@ class RequestAttrs:
         """request headers User-Agent"""
         return self.request.headers.get('User-Agent')
 
+    @property
+    def cookies(self) -> dict:
+        """request cookies"""
+        return dict(self.request.cookies)
+
 
 class RequestDictModel(BaseModel):
     """Data structure about request dict"""
@@ -103,6 +108,7 @@ class RequestDictModel(BaseModel):
         None, alias='json', title='Content-Type: JSON'
     )
     method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
+    cookies: dict = Field(default_factory=dict, title='Cookies')
 
     @classmethod
     def get_properties(cls):
