@@ -4,7 +4,12 @@ from starlette.middleware.cors import CORSMiddleware
 
 from httpbin.routers import router
 
-app = FastAPI(title='FastAPI-httpbin')
+app = FastAPI(
+    title='FastAPI-httpbin',
+    description='HTTP Request & Response Service, '
+                'written in Python + FastAPI.',
+    docs_url='/'    # swagger docs page url
+)
 
 app.add_middleware(
     CORSMiddleware,
