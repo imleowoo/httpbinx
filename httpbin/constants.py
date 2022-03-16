@@ -21,7 +21,6 @@ ENV_COOKIES = (
     '__utmb',
 )
 
-
 ASCII_ART = """
     -=[ teapot ]=-
 
@@ -50,3 +49,5 @@ ANGRY_ASCII = """
 ROBOT_TXT = """User-agent: *
 Disallow: /deny
 """
+
+AWESOME_HTTPBIN_BASE64ENCODED = 'RkFTVEFQSS1IVFRQQklOIGlzIGF3ZXNvbWUK'
