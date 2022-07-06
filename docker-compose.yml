@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  fastapi-http:
-    image: fastapi-httpbin
-    container_name: fastapi-httpbin
+  httpbinx:
+    image: httpbinx
+    container_name: httpbinx
     restart: always
     build:
       context: .
