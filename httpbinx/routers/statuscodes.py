@@ -4,8 +4,8 @@ from fastapi import Path
 from starlette.responses import PlainTextResponse
 from starlette.responses import Response
 
-from httpbin.helpers import status_code_response
-from httpbin.helpers import weighted_choice
+from httpbinx.helpers import status_code_response
+from httpbinx.helpers import weighted_choice
 
 router = APIRouter()
 

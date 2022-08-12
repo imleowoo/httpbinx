@@ -8,10 +8,10 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from httpbin.constants import ANGRY_ASCII
-from httpbin.constants import ROBOT_TXT
-from httpbin.helpers import request_attrs_response
-from httpbin.schemas import RequestDictModel
+from httpbinx.constants import ANGRY_ASCII
+from httpbinx.constants import ROBOT_TXT
+from httpbinx.helpers import request_attrs_response
+from httpbinx.schemas import RequestDictModel
 
 router = APIRouter()
 
