@@ -6,9 +6,9 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.status import HTTP_406_NOT_ACCEPTABLE
 
-from httpbin.helpers import status_code_response
-from httpbin.responses import ImageResponse
-from httpbin.utils import get_templates_abspath
+from httpbinx.helpers import status_code_response
+from httpbinx.responses import ImageResponse
+from httpbinx.utils import get_templates_abspath
 
 images_path = get_templates_abspath('images')
 

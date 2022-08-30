@@ -8,11 +8,11 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.responses import Response
 
-from httpbin.constants import ACCEPTED_MEDIA_TYPES
-from httpbin.constants import ASCII_ART
-from httpbin.constants import REDIRECT_LOCATION
-from httpbin.schemas import RequestAttrs
-from httpbin.schemas import RequestDictModel
+from httpbinx.constants import ACCEPTED_MEDIA_TYPES
+from httpbinx.constants import ASCII_ART
+from httpbinx.constants import REDIRECT_LOCATION
+from httpbinx.schemas import RequestAttrs
+from httpbinx.schemas import RequestDictModel
 
 
 def get_request_attrs(request: Request, keys, **extras) -> dict:

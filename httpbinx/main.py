@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from httpbin.routers import router
+from httpbinx.routers import router
 
 app = FastAPI(
     title='httpbinx',

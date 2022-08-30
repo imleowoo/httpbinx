@@ -3,8 +3,8 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from httpbin.helpers import request_attrs_response
-from httpbin.schemas import RequestAttrs
+from httpbinx.helpers import request_attrs_response
+from httpbinx.schemas import RequestAttrs
 
 router = APIRouter()
 
