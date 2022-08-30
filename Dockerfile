@@ -1,7 +1,7 @@
 FROM python:3.9-alpine
 
 LABEL name="httpbinx"
-LABEL version="0.1"
+LABEL version="1.0.1"
 LABEL description="HTTP Request & Response Service, written in Python + FastAPI"
 
 WORKDIR /httpbinx
