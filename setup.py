@@ -38,7 +38,7 @@ setup(
         include=['httpbinx'],
     ),
     requires=[
-        'fastapi', 'pydantic', 'uvicorn'
+        'fastapi', 'pydantic', 'uvicorn', 'starlette'
     ],
     python_requires='>=3.6'
 )
