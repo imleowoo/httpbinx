@@ -7,9 +7,9 @@ from fastapi import Path
 from starlette import status
 from starlette.requests import Request
 
-from httpbin.helpers import parse_multi_value_header
-from httpbin.helpers import status_code_response
-from httpbin.routers import httpmethods
+from httpbinx.helpers import parse_multi_value_header
+from httpbinx.helpers import status_code_response
+from httpbinx.routers import httpmethods
 
 router = APIRouter()
 

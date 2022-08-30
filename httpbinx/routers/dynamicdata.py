@@ -13,10 +13,10 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from httpbin.constants import AWESOME_HTTPBIN_BASE64ENCODED
-from httpbin.helpers import get_request_attrs
-from httpbin.responses import OctetStreamResponse
-from httpbin.schemas import RequestDictModel
+from httpbinx.constants import AWESOME_HTTPBIN_BASE64ENCODED
+from httpbinx.helpers import get_request_attrs
+from httpbinx.responses import OctetStreamResponse
+from httpbinx.schemas import RequestDictModel
 
 router = APIRouter()
 

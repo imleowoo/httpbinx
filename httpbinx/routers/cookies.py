@@ -4,9 +4,9 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
-from httpbin.constants import ENV_COOKIES
-from httpbin.helpers import request_attrs_response
-from httpbin.schemas import RequestDictModel
+from httpbinx.constants import ENV_COOKIES
+from httpbinx.helpers import request_attrs_response
+from httpbinx.schemas import RequestDictModel
 
 router = APIRouter()
 
