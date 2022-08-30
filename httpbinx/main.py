@@ -8,7 +8,7 @@ app = FastAPI(
     title='httpbinx',
     description='HTTP Request & Response Service, '
                 'written in Python + FastAPI.',
-    docs_url='/'    # swagger docs page url
+    docs_url='/',    # swagger docs page url
 )
 
 app.add_middleware(
