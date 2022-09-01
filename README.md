@@ -10,10 +10,11 @@ A  [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.
 ### Run directly
 
 ```shell
-$ uvicorn httpbin.main:app --host=0.0.0.0 --port=80
+$ python setup.py install
+$ uvicorn httpbinx:app --host=0.0.0.0 --port=80
 ```
 
-### Run with Docker
+### ~~Run with Docker~~
 
 ```shell
 $ docker pull leowoo/httpbinx:latest
