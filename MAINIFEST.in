@@ -1,1 +1,1 @@
-include httpbinx/VERSION README.md LICENSE
+recursive-include httpbinx *
