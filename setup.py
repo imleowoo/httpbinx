@@ -8,6 +8,13 @@ from setuptools import setup
 with open(join(dirname(__file__), 'httpbinx', 'VERSION'), 'r') as vf:
     version = vf.read().strip()
 
+install_requires = [
+    'fastapi',
+    'pydantic',
+    'uvicorn',
+    'starlette'
+]
+
 setup(
     name='httpbinx',
     version=version,
@@ -37,8 +44,10 @@ setup(
     packages=find_packages(
         include=['httpbinx'],
     ),
-    requires=[
-        'fastapi', 'pydantic', 'uvicorn', 'starlette'
-    ],
-    python_requires='>=3.6'
+    include_package_data=True,
+    install_requires=install_requires,
+    python_requires='>=3.6',
+    project_urls={
+        'Source': 'https://github.com/imleowoo/httpbinx',
+    },
 )
