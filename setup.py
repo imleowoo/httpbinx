@@ -27,6 +27,8 @@ setup(
     # Author
     author='Leo',
     author_email='imleowoo@outlook.com',
+    maintainer='Leo',
+    maintainer_email='imleowoo@outlook.com',
 
     # license
     license='MIT',
