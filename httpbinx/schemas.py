@@ -4,12 +4,18 @@ from functools import lru_cache
 from typing import Optional
 from typing import Union
 
+from pydantic import AnyHttpUrl
 from pydantic import BaseModel
 from pydantic import Field
 from starlette.requests import Request
 
 
 class HTTPMethods(str, Enum):
+    """ HTTP request methods
+
+    References:
+        - https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+    """
     get = 'GET'
     head = 'HEAD'
     post = 'POST'
@@ -24,7 +30,12 @@ class HTTPMethods(str, Enum):
 class RequestAttrs:
 
     def __init__(self, request: Request):
-        self.request = request
+        self._request = request
+
+    @property
+    def request(self):
+        """Read only"""
+        return self._request
 
     @property
     def method(self):
@@ -54,12 +65,12 @@ class RequestAttrs:
 
     @property
     def form(self):
-        """request form"""
+        """TODO request form"""
         return dict()
 
     @property
     def data(self):
-        """request data."""
+        """TODO request data."""
         return ''
 
     @property
@@ -75,12 +86,12 @@ class RequestAttrs:
 
     @property
     def files(self):
-        """request files."""
+        """TODO request files."""
         return ''
 
     @property
     def json(self):
-        """request json."""
+        """TODO request json."""
         return None
 
     @property
@@ -91,13 +102,17 @@ class RequestAttrs:
     @property
     def cookies(self) -> dict:
         """request cookies"""
-        return dict(self.request.cookies)
+        return self.request.cookies
 
 
 class RequestDictModel(BaseModel):
-    """Data structure about request dict"""
+    """Data structure about request dict
 
-    url: str = Field('', title='Request URL')
+    References:
+        - AnyHttpUrl vs HttpUrl: https://docs.pydantic.dev/usage/types/#urls
+    """
+
+    url: AnyHttpUrl = Field(title='Request URL')
     args: dict = Field(default_factory=dict, title='Request Args')
     form: dict = Field(default_factory=dict, title='Request Form')
     data: str = Field('', title='Request Data')
@@ -105,13 +120,15 @@ class RequestDictModel(BaseModel):
     origin: str = Field('', title="Client's IP")
     files: dict = Field(default_factory=dict, title='Upload Files')
     json_data: Optional[Union[str, list]] = Field(
-        None, alias='json', title='Content-Type: JSON'
+        None, alias='json', title='Content-Type: application/json'
     )
     method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
     cookies: dict = Field(default_factory=dict, title='Cookies')
 
     @classmethod
     def get_properties(cls):
+        """Get declared property fields"""
+
         @lru_cache
         def properties():
             return tuple(cls.schema()['properties'].keys())
