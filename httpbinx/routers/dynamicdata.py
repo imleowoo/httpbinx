@@ -16,7 +16,7 @@ from starlette.responses import JSONResponse
 from httpbinx.constants import AWESOME_HTTPBIN_BASE64ENCODED
 from httpbinx.helpers import get_request_attrs
 from httpbinx.responses import OctetStreamResponse
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
@@ -70,7 +70,7 @@ async def random_bytes(
 @router.api_route(
     '/delay/{delay}',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
-    response_model=RequestDictModel,
+    response_model=RequestInfo,
     description='Returns a delayed response (max of 10 seconds).',
     response_description='A delayed response.'
 )

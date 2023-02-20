@@ -11,14 +11,14 @@ from starlette.responses import JSONResponse
 from httpbinx.constants import ANGRY_ASCII
 from httpbinx.constants import ROBOT_TXT
 from httpbinx.helpers import request_attrs_response
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
 
 @router.get(
     '/brotli',
-    response_model=RequestDictModel,
+    response_model=RequestInfo,
     description='Returns Brotli-encoded data.',
     response_description='Brotli-encoded data.'
 )
@@ -32,7 +32,7 @@ async def brotli_encoded_content(request: Request):
 
 @router.get(
     '/deflate',
-    response_model=RequestDictModel,
+    response_model=RequestInfo,
     description='Returns Deflate-encoded data.',
     response_description='Defalte-encoded data.'
 )
@@ -46,7 +46,7 @@ async def deflate_encoded_content(request: Request):
 
 @router.get(
     '/gzip',
-    response_model=RequestDictModel,
+    response_model=RequestInfo,
     description='Returns GZip-encoded data.',
     response_description='GZip-encoded data.'
 )

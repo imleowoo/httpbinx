@@ -105,7 +105,7 @@ class RequestAttrs:
         return self.request.cookies
 
 
-class RequestDictModel(BaseModel):
+class RequestInfo(BaseModel):
     """Data structure about request dict
 
     References:

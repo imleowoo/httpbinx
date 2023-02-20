@@ -12,17 +12,17 @@ from httpbinx.constants import ACCEPTED_MEDIA_TYPES
 from httpbinx.constants import ASCII_ART
 from httpbinx.constants import REDIRECT_LOCATION
 from httpbinx.schemas import RequestAttrs
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 
 def get_request_attrs(request: Request, keys, **extras) -> dict:
     """Returns request attrs of given keys"""
-    properties = RequestDictModel.get_properties()
-    assert all(map(properties.__contains__, keys))
+    properties = RequestInfo.get_properties()
+    assert all(map(lambda k: k in properties, keys))
 
     request_attrs = RequestAttrs(request=request)
 
-    request_dict = RequestDictModel(
+    info = RequestInfo(
         url=request_attrs.url,
         args=request_attrs.args,
         form=request_attrs.form,
@@ -34,8 +34,8 @@ def get_request_attrs(request: Request, keys, **extras) -> dict:
         method=request_attrs.method,
         cookies=request_attrs.cookies
     ).dict(include=set(keys))
-    request_dict.update(extras)
-    return request_dict
+    info.update(extras)
+    return info
 
 
 def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
