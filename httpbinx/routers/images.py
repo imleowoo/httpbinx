@@ -18,8 +18,8 @@ router = APIRouter(default_response_class=ImageResponse)
 @router.get(
     '/image',
     response_class=ImageResponse,
-    description='Returns a simple image of the type suggest by to '
-                'Accept header.',
+    name='Returns a simple image of the type suggest by to '
+         'Accept header.',
     response_description='An image.'
 )
 async def image(request: Request):
@@ -43,7 +43,7 @@ async def image(request: Request):
 @router.get(
     '/image/png',
     response_class=ImageResponse,
-    description='Returns a simple PNG image.',
+    name='Returns a simple PNG image.',
     response_description='A PNG image.'
 )
 async def image_png():
@@ -53,7 +53,7 @@ async def image_png():
 @router.get(
     '/image/jpeg',
     response_class=ImageResponse,
-    description='Returns a simple JPEG image.',
+    name='Returns a simple JPEG image.',
     response_description='A JPEG image.'
 )
 async def image_jpeg():
@@ -63,7 +63,7 @@ async def image_jpeg():
 @router.get(
     '/image/webp',
     response_class=ImageResponse,
-    description='Returns a simple WEBP image.',
+    name='Returns a simple WEBP image.',
     response_description='A WEBP image.'
 )
 async def image_webp():
@@ -73,7 +73,7 @@ async def image_webp():
 @router.get(
     '/image/svg',
     response_class=ImageResponse,
-    description='Returns a simple SVG image.',
+    name='Returns a simple SVG image.',
     response_description='An SVG image.'
 )
 async def image_svg():

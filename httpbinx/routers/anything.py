@@ -11,7 +11,7 @@ router = APIRouter()
 @router.api_route(
     '/anything',    # TODO path regex
     response_model=RequestInfo,
-    description='Returns anything passed in request data.',
+    name='Returns anything passed in request data.',
     response_description='Anything passed in request',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']
 )

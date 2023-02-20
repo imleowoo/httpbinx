@@ -14,7 +14,7 @@ router = APIRouter()
 @router.get(
     '/cookies',
     response_model=RequestInfo,
-    description='Returns cookie data.',
+    name='Returns cookie data.',
     response_description='Set cookies.'
 )
 async def cookies(
@@ -34,8 +34,8 @@ async def cookies(
 
 @router.get(
     '/cookies/set',
-    description='Sets cookie(s) as provided by the query string '
-                'and redirects to cookie list.',
+    name='Sets cookie(s) as provided by the query string '
+         'and redirects to cookie list.',
     response_description='Redirect to cookie list',
     response_class=RedirectResponse
 )
@@ -50,7 +50,7 @@ async def set_cookies(request: Request):
 
 @router.get(
     '/cookies/set/{name}/{value}',
-    description='Sets a cookie and redirects to cookie list.',
+    name='Sets a cookie and redirects to cookie list.',
     response_description='Set cookies and redirects to cookie list.',
     response_class=RedirectResponse
 )
@@ -66,8 +66,8 @@ async def set_cookie(
 
 @router.get(
     '/cookies/delete',
-    description='Deletes cookie(s) as provided by the query string '
-                'and redirects to cookie list.',
+    name='Deletes cookie(s) as provided by the query string '
+         'and redirects to cookie list.',
     response_description='Redirect to cookie list',
     response_class=RedirectResponse
 )
