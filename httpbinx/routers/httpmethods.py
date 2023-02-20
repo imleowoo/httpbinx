@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get(
     '/get',
     response_model=RequestInfo,
-    description="The request's query parameters.",
+    name="The request's query parameters.",
     response_description="The request's query parameters."
 )
 async def get(request: Request) -> JSONResponse:
@@ -26,7 +26,7 @@ async def get(request: Request) -> JSONResponse:
 @router.post(
     '/post',
     response_model=RequestInfo,
-    description="The request's POST parameters.",
+    name="The request's POST parameters.",
     response_description="The request's POST parameters."
 )
 async def post(request: Request) -> JSONResponse:
@@ -40,7 +40,7 @@ async def post(request: Request) -> JSONResponse:
 @router.put(
     '/put',
     response_model=RequestInfo,
-    description="The request's PUT parameters.",
+    name="The request's PUT parameters.",
     response_description="The request's PUT parameters."
 )
 async def put(request: Request) -> JSONResponse:
@@ -54,7 +54,7 @@ async def put(request: Request) -> JSONResponse:
 @router.delete(
     '/delete',
     response_model=RequestInfo,
-    description="The request's DELETE parameters.",
+    name="The request's DELETE parameters.",
     response_description="The request's DELETE parameters."
 )
 async def delete(request: Request) -> JSONResponse:
@@ -68,7 +68,7 @@ async def delete(request: Request) -> JSONResponse:
 @router.patch(
     '/patch',
     response_model=RequestInfo,
-    description="The request's PATCH parameters.",
+    name="The request's PATCH parameters.",
     response_description="The request's PATCH parameters."
 )
 async def patch(request: Request) -> JSONResponse:

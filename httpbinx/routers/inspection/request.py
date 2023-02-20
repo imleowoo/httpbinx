@@ -11,8 +11,8 @@ router = APIRouter()
 
 @router.get(
     '/headers',
-    description="Return the incoming request's HTTP headers.",
-    response_description="The request's headers."
+    name="Return the incoming request's HTTP headers.",
+    response_description="The request's headers.",
 )
 async def headers(request: Request) -> JSONResponse:
     return request_attrs_response(
@@ -23,7 +23,7 @@ async def headers(request: Request) -> JSONResponse:
 
 @router.get(
     '/ip',
-    description="Returns the requester's IP Address.",
+    name="Returns the requester's IP Address.",
     response_description="The Requester's IP Address."
 )
 async def ip(request: Request) -> JSONResponse:
@@ -33,7 +33,11 @@ async def ip(request: Request) -> JSONResponse:
     )
 
 
-@router.get('/user-agent')
+@router.get(
+    '/user-agent',
+    name="Return the incoming requests's User-Agent header.",
+    response_description='The request’s User-Agent header.'
+)
 async def user_agent(request: Request) -> JSONResponse:
     # TODO show_env
     return JSONResponse(

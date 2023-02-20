@@ -21,7 +21,7 @@ class RedirectTypes(str, Enum):
 @router.api_route(
     '/redirect-to',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
-    description='302/3XX Redirects to the given URL.',
+    name='302/3XX Redirects to the given URL.',
     response_description='A redirection.',
     response_class=Response
 )
@@ -42,7 +42,7 @@ async def redirect_to(
 
 @router.get(
     '/redirect/{n}',
-    description='302 Redirects n times.',
+    name='302 Redirects n times.',
     response_description='A redirection.'
 )
 async def redirect_n_times(
@@ -65,7 +65,7 @@ async def redirect_n_times(
 
 @router.get(
     '/absolute-redirect/{n}',
-    description='Absolutely 302 Redirects n times.',
+    name='Absolutely 302 Redirects n times.',
     response_description='A redirection.',
     response_class=RedirectResponse,
 )
@@ -81,7 +81,7 @@ async def absolute_redirect_n_times(
 
 @router.get(
     '/relative-redirect/{n}',
-    description='Relatively 302 Redirects n times.',
+    name='Relatively 302 Redirects n times.',
     response_description='A redirection.'
 )
 async def relative_redirect_n_times(
