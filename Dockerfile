@@ -1,7 +1,7 @@
 FROM python:slim
 
 LABEL name="httpbinx"
-LABEL version="1.0.2"
+LABEL version="1.1.0"
 LABEL description="HTTP Request & Response Service, written in Python + FastAPI"
 
 COPY . /httpbinx
