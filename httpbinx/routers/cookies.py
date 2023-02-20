@@ -6,14 +6,14 @@ from starlette.responses import RedirectResponse
 
 from httpbinx.constants import ENV_COOKIES
 from httpbinx.helpers import request_attrs_response
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
 
 @router.get(
     '/cookies',
-    response_model=RequestDictModel,
+    response_model=RequestInfo,
     description='Returns cookie data.',
     response_description='Set cookies.'
 )

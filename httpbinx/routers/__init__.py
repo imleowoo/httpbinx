@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+__all__ = ['router']
+
 from fastapi import APIRouter
 
 from httpbinx.routers import anything
