@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.get(
     '/basic-auth/{user}/{password}',
-    description='Prompts the user for authorization using HTTP Basic Auth.',
+    name='Prompts the user for authorization using HTTP Basic Auth.',
     response_description='TODO'
 )
 async def basic_auth(

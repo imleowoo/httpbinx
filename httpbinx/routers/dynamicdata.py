@@ -16,7 +16,7 @@ from starlette.responses import JSONResponse
 from httpbinx.constants import AWESOME_HTTPBIN_BASE64ENCODED
 from httpbinx.helpers import get_request_attrs
 from httpbinx.responses import OctetStreamResponse
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
@@ -24,7 +24,7 @@ router = APIRouter()
 @router.get(
     '/base64/{value}',
     response_class=PlainTextResponse,
-    description='Decodes base64url-encoded string.',
+    name='Decodes base64url-encoded string.',
 )
 async def decode_base64(
         value: str = Path(
@@ -47,7 +47,7 @@ async def decode_base64(
 @router.get(
     '/bytes/{n}',
     response_class=OctetStreamResponse,
-    description='Returns n random bytes generated with given seed'
+    name='Returns n random bytes generated with given seed'
 )
 async def random_bytes(
         n: int = Path(..., title='binary file size', gt=0),
@@ -70,8 +70,8 @@ async def random_bytes(
 @router.api_route(
     '/delay/{delay}',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
-    response_model=RequestDictModel,
-    description='Returns a delayed response (max of 10 seconds).',
+    response_model=RequestInfo,
+    name='Returns a delayed response (max of 10 seconds).',
     response_description='A delayed response.'
 )
 async def delay_response(

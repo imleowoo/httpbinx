@@ -3,15 +3,15 @@ from fastapi import APIRouter
 from starlette.requests import Request
 
 from httpbinx.helpers import request_attrs_response
-from httpbinx.schemas import RequestDictModel
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
 
 @router.api_route(
     '/anything',    # TODO path regex
-    response_model=RequestDictModel,
-    description='Returns anything passed in request data.',
+    response_model=RequestInfo,
+    name='Returns anything passed in request data.',
     response_description='Anything passed in request',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']
 )
