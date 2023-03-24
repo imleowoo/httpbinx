@@ -27,6 +27,37 @@ class HTTPMethods(str, Enum):
     patch = 'PATCH'
 
 
+class RequestInfo(BaseModel):
+    """Data structure about request dict
+
+    References:
+        - AnyHttpUrl vs HttpUrl: https://docs.pydantic.dev/usage/types/#urls
+    """
+
+    url: AnyHttpUrl = Field(title='Request URL')
+    args: dict = Field(default_factory=dict, title='Request Args')
+    form: dict = Field(default_factory=dict, title='Request Form')
+    data: str = Field('', title='Request Data')
+    headers: dict = Field(default_factory=dict, title='Request Headers')
+    origin: str = Field('', title="Client's IP")
+    files: dict = Field(default_factory=dict, title='Upload Files')
+    json_data: Optional[Union[str, list]] = Field(
+        None, alias='json', title='Content-Type: application/json'
+    )
+    method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
+    cookies: dict = Field(default_factory=dict, title='Cookies')
+
+    @classmethod
+    def get_properties(cls):
+        """Get declared property fields"""
+
+        @lru_cache
+        def properties():
+            return tuple(cls.schema()['properties'].keys())
+
+        return properties()
+
+
 class RequestAttrs:
 
     def __init__(self, request: Request):
@@ -104,33 +135,7 @@ class RequestAttrs:
         """request cookies"""
         return self.request.cookies
 
-
-class RequestInfo(BaseModel):
-    """Data structure about request dict
-
-    References:
-        - AnyHttpUrl vs HttpUrl: https://docs.pydantic.dev/usage/types/#urls
-    """
-
-    url: AnyHttpUrl = Field(title='Request URL')
-    args: dict = Field(default_factory=dict, title='Request Args')
-    form: dict = Field(default_factory=dict, title='Request Form')
-    data: str = Field('', title='Request Data')
-    headers: dict = Field(default_factory=dict, title='Request Headers')
-    origin: str = Field('', title="Client's IP")
-    files: dict = Field(default_factory=dict, title='Upload Files')
-    json_data: Optional[Union[str, list]] = Field(
-        None, alias='json', title='Content-Type: application/json'
-    )
-    method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
-    cookies: dict = Field(default_factory=dict, title='Cookies')
-
-    @classmethod
-    def get_properties(cls):
-        """Get declared property fields"""
-
-        @lru_cache
-        def properties():
-            return tuple(cls.schema()['properties'].keys())
-
-        return properties()
+    def request_info(self) -> RequestInfo:
+        return RequestInfo(
+            url=self.url,
+        )
