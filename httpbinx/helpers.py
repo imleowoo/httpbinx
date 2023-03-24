@@ -17,19 +17,8 @@ from httpbinx.schemas import RequestInfo
 
 def get_request_info(request: Request) -> RequestInfo:
     """Return model RequestInfo"""
-    request_attrs = RequestAttrs(request=request)
-    return RequestInfo(
-        url=request_attrs.url,
-        args=request_attrs.args,
-        form=request_attrs.form,
-        data=request_attrs.data,
-        headers=request_attrs.headers,
-        origin=request_attrs.client_host,
-        files=request_attrs.files,
-        json_data=request_attrs.json,
-        method=request_attrs.method,
-        cookies=request_attrs.cookies
-    )
+    attrs = RequestAttrs(request=request)
+    return attrs.request_info
 
 
 def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:

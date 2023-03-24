@@ -135,7 +135,18 @@ class RequestAttrs:
         """request cookies"""
         return self.request.cookies
 
+    @property
     def request_info(self) -> RequestInfo:
+        """fastapi object `Request` to model `RequestInfo`"""
         return RequestInfo(
             url=self.url,
+            args=self.args,
+            form=self.form,
+            data=self.data,
+            headers=self.headers,
+            origin=self.client_host,
+            files=self.files,
+            json_data=self.json,
+            method=self.method,
+            cookies=self.cookies
         )
