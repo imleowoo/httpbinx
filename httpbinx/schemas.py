@@ -45,7 +45,6 @@ class RequestInfo(BaseModel):
         None, alias='json', title='Content-Type: application/json'
     )
     method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
-    cookies: dict = Field(default_factory=dict, title='Cookies')
 
     @classmethod
     def get_properties(cls):
@@ -149,5 +148,4 @@ class RequestAttrs:
             files=self.files,
             json_data=self.json,
             method=self.method,
-            cookies=self.cookies
         )

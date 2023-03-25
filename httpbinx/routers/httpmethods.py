@@ -2,9 +2,8 @@
 """HTTP Methods"""
 from fastapi import APIRouter
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 
-from httpbinx.helpers import request_attrs_response
+from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
@@ -13,14 +12,12 @@ router = APIRouter()
 @router.get(
     '/get',
     response_model=RequestInfo,
+    response_model_include={'url', 'args', 'headers', 'origin'},
     name="The request's query parameters.",
     response_description="The request's query parameters."
 )
-async def get(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('url', 'args', 'headers', 'origin')
-    )
+async def get(request: Request):
+    return to_request_info(request)
 
 
 @router.post(
@@ -29,12 +26,8 @@ async def get(request: Request) -> JSONResponse:
     name="The request's POST parameters.",
     response_description="The request's POST parameters."
 )
-async def post(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('url', 'args', 'form', 'data', 'origin',
-              'headers', 'files', 'json')
-    )
+async def post(request: Request):
+    return to_request_info(request)
 
 
 @router.put(
@@ -43,12 +36,8 @@ async def post(request: Request) -> JSONResponse:
     name="The request's PUT parameters.",
     response_description="The request's PUT parameters."
 )
-async def put(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('url', 'args', 'form', 'data', 'origin',
-              'headers', 'files', 'json')
-    )
+async def put(request: Request):
+    return to_request_info(request)
 
 
 @router.delete(
@@ -57,12 +46,8 @@ async def put(request: Request) -> JSONResponse:
     name="The request's DELETE parameters.",
     response_description="The request's DELETE parameters."
 )
-async def delete(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('url', 'args', 'form', 'data', 'origin',
-              'headers', 'files', 'json')
-    )
+async def delete(request: Request):
+    return to_request_info(request)
 
 
 @router.patch(
@@ -71,9 +56,5 @@ async def delete(request: Request) -> JSONResponse:
     name="The request's PATCH parameters.",
     response_description="The request's PATCH parameters."
 )
-async def patch(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('url', 'args', 'form', 'data', 'origin',
-              'headers', 'files', 'json')
-    )
+async def patch(request: Request):
+    return to_request_info(request)
