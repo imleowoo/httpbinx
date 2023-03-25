@@ -15,27 +15,24 @@ from httpbinx.schemas import RequestAttrs
 from httpbinx.schemas import RequestInfo
 
 
-def get_request_attrs(request: Request, keys, **extras) -> dict:
+def to_request_info(request: Request) -> RequestInfo:
+    """Return model RequestInfo"""
+    attrs = RequestAttrs(request=request)
+    return attrs.request_info
+
+
+def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:
     """Returns request attrs of given keys"""
     properties = RequestInfo.get_properties()
-    assert all(map(lambda k: k in properties, keys))
+    if keys:
+        assert all(map(lambda k: k in properties, keys))
+    else:
+        keys = properties
 
-    request_attrs = RequestAttrs(request=request)
-
-    info = RequestInfo(
-        url=request_attrs.url,
-        args=request_attrs.args,
-        form=request_attrs.form,
-        data=request_attrs.data,
-        headers=request_attrs.headers,
-        origin=request_attrs.client_host,
-        files=request_attrs.files,
-        json_data=request_attrs.json,
-        method=request_attrs.method,
-        cookies=request_attrs.cookies
-    ).dict(include=set(keys))
-    info.update(extras)
-    return info
+    info = to_request_info(request)
+    data = info.dict(include=set(keys))
+    data.update(extras)
+    return data
 
 
 def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
