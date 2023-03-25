@@ -3,8 +3,9 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from httpbinx.helpers import request_attrs_response, get_request_attrs, get_request_info
-from httpbinx.schemas import RequestAttrs, RequestInfo
+from httpbinx.helpers import to_request_info
+from httpbinx.schemas import RequestAttrs
+from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
 
@@ -17,19 +18,18 @@ router = APIRouter()
     response_description="The request's headers.",
 )
 async def headers(request: Request):
-    return get_request_info(request)
+    return to_request_info(request)
 
 
 @router.get(
     '/ip',
+    response_model=RequestInfo,
+    response_model_include={'origin'},
     name="Returns the requester's IP Address.",
     response_description="The Requester's IP Address."
 )
-async def ip(request: Request) -> JSONResponse:
-    return request_attrs_response(
-        request,
-        keys=('origin',)
-    )
+async def ip(request: Request):
+    return to_request_info(request)
 
 
 @router.get(

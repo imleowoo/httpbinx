@@ -136,6 +136,7 @@ class RequestAttrs:
         return self.request.cookies
 
     @property
+    @lru_cache(maxsize=1)
     def request_info(self) -> RequestInfo:
         """fastapi object `Request` to model `RequestInfo`"""
         return RequestInfo(

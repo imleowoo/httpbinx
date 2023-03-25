@@ -15,7 +15,7 @@ from httpbinx.schemas import RequestAttrs
 from httpbinx.schemas import RequestInfo
 
 
-def get_request_info(request: Request) -> RequestInfo:
+def to_request_info(request: Request) -> RequestInfo:
     """Return model RequestInfo"""
     attrs = RequestAttrs(request=request)
     return attrs.request_info
@@ -29,7 +29,7 @@ def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:
     else:
         keys = properties
 
-    info = get_request_info(request)
+    info = to_request_info(request)
     data = info.dict(include=set(keys))
     data.update(extras)
     return data
