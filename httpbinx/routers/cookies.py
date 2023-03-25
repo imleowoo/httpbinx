@@ -2,18 +2,17 @@
 """Cookies"""
 from fastapi import APIRouter
 from starlette.requests import Request
+from starlette.responses import JSONResponse
 from starlette.responses import RedirectResponse
 
 from httpbinx.constants import ENV_COOKIES
-from httpbinx.helpers import request_attrs_response
-from httpbinx.schemas import RequestInfo
+from httpbinx.schemas import RequestAttrs
 
 router = APIRouter()
 
 
 @router.get(
     '/cookies',
-    response_model=RequestInfo,
     name='Returns cookie data.',
     response_description='Set cookies.'
 )
@@ -21,11 +20,8 @@ async def cookies(
         *,
         show_env: bool = False,
         request: Request
-):
-    resp = request_attrs_response(
-        request,
-        keys=('cookies',)
-    )
+) -> JSONResponse:
+    resp = JSONResponse(content={'cookies': RequestAttrs(request).cookies})
     if show_env:
         for key in ENV_COOKIES:
             resp.delete_cookie(key)
