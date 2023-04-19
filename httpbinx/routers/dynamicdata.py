@@ -2,6 +2,7 @@
 """Dynamic Data"""
 import asyncio
 import base64
+import binascii
 import random
 import uuid
 
@@ -13,8 +14,8 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from httpbinx.constants import AWESOME_HTTPBIN_BASE64ENCODED
-from httpbinx.helpers import get_request_attrs
+from httpbinx.constants import AWESOME_BASE64ENCODED
+from httpbinx.helpers import to_request_info
 from httpbinx.responses import OctetStreamResponse
 from httpbinx.schemas import RequestInfo
 
@@ -25,19 +26,20 @@ router = APIRouter()
     '/base64/{value}',
     response_class=PlainTextResponse,
     name='Decodes base64url-encoded string.',
+    response_description='Decoded base64 content.',
 )
 async def decode_base64(
         value: str = Path(
             ...,
             title='base64-encoded string',
-            example=AWESOME_HTTPBIN_BASE64ENCODED
+            example=AWESOME_BASE64ENCODED
         )
 ):
     encoded: bytes = value.encode('utf-8')
     try:
         decoded = base64.urlsafe_b64decode(encoded).decode('utf-8')
         return PlainTextResponse(content=decoded)
-    except Exception as err:
+    except binascii.Error as err:
         return PlainTextResponse(
             content=f'Incorrect Base64 data: {value}, err_msg: {err}',
             status_code=status.HTTP_400_BAD_REQUEST
@@ -47,10 +49,11 @@ async def decode_base64(
 @router.get(
     '/bytes/{n}',
     response_class=OctetStreamResponse,
-    name='Returns n random bytes generated with given seed'
+    name='Returns n random bytes generated with given seed',
+    response_description='A delayed response.'
 )
 async def random_bytes(
-        n: int = Path(..., title='binary file size', gt=0),
+        n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),
         seed: int = Query(
             None,
             title='random seed',
@@ -80,16 +83,41 @@ async def delay_response(
         request: Request
 ):
     await asyncio.sleep(delay)
-    return get_request_attrs(
-        request,
-        keys=('url', 'args', 'form', 'data', 'origin', 'headers', 'files')
-    )
+    return to_request_info(request)
 
 
-@router.get('/drip')
-async def drip():
-    """Drips data over a duration after an optional initial delay."""
-    pass
+@router.get(
+    '/drip',
+    response_class=OctetStreamResponse,
+    name='Drips data over a duration after an optional initial delay.',
+    response_description='A dripped response.'
+)
+async def drip(
+        duration: float = Query(
+            default=2,
+            description='The amount of time (in seconds) over which to drip each byte'
+        ),
+        numbytes: int = Query(
+            default=10, gt=0, lt=10 * 1024 * 1024,
+            description='The number of bytes to respond with',
+        ),
+        code: int = Query(
+            default=200, title='response code',
+            description='The response code that will be returned'
+        ),
+        delay: float = Query(
+            default=2, ge=0,
+            description='The amount of time (in seconds) to delay before responding'
+        ),
+):
+    await asyncio.sleep(delay)
+    # Number of seconds to pause during each data generation
+    pause = int(duration / numbytes)
+    content = b''
+    for _ in range(numbytes):
+        content += b'*'
+        await asyncio.sleep(pause)
+    return OctetStreamResponse(content=content, status_code=code)
 
 
 @router.get('/links/{n}/{offset}')

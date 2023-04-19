@@ -19,7 +19,8 @@ from httpbinx.routers.inspection import response_inspection
 router = APIRouter()
 router.include_router(httpmethods.router, tags=['HTTP Methods'])
 router.include_router(request_inspection.router, tags=['Request inspection'])
-router.include_router(response_inspection.router, tags=['Response inspection'])
+router.include_router(response_inspection.router, tags=['Response inspection'],
+                      deprecated=True)
 router.include_router(dynamicdata.router, tags=['Dynamic data'])
 router.include_router(responseformats.router, tags=['Response formats'])
 router.include_router(redirects.router, tags=['Redirects'])
