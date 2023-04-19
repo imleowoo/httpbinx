@@ -16,7 +16,7 @@ from httpbinx.schemas import RequestInfo
 
 
 def to_request_info(request: Request) -> RequestInfo:
-    """Return model RequestInfo"""
+    """Returns model RequestInfo instance"""
     attrs = RequestAttrs(request=request)
     return attrs.request_info
 
@@ -36,7 +36,7 @@ def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:
 
 
 def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
-    """Return json response object of give keys about request attributes"""
+    """Returns json response object of give keys about request attributes"""
     attrs = get_request_attrs(request, keys, **extras)
     return JSONResponse(content=attrs)
 
