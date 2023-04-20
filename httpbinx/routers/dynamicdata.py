@@ -12,6 +12,7 @@ from fastapi import Query
 from fastapi.responses import PlainTextResponse
 from starlette import status
 from starlette.requests import Request
+from starlette.responses import HTMLResponse
 from starlette.responses import JSONResponse
 
 from httpbinx.constants import AWESOME_BASE64ENCODED
@@ -98,7 +99,7 @@ async def drip(
             description='The amount of time (in seconds) over which to drip each byte'
         ),
         numbytes: int = Query(
-            default=10, gt=0, lt=10 * 1024 * 1024,
+            default=10, gt=0, lt=10 * 1024 * 1024,  # set 10MB limit
             description='The number of bytes to respond with',
         ),
         code: int = Query(
@@ -120,13 +121,20 @@ async def drip(
     return OctetStreamResponse(content=content, status_code=code)
 
 
-@router.get('/links/{n}/{offset}')
+@router.get(
+    '/links/{n}/{offset}',
+    name='Generate a page containing n links to other pages which do the same.',
+    response_class=HTMLResponse,
+    response_description='HTML links.'
+)
 async def link_page(
         *,
-        n: int = Path(..., ge=1, le=200),
-        offset: int
+        n: int = Path(
+            ..., ge=1, le=200,  # limit to between 1 and 200 links
+            description='Number of links'
+        ),
+        offset: int = Path(..., ge=0)
 ):
-    """Generate a page containing n links to other pages which do the same."""
     pass
 
 
@@ -144,8 +152,12 @@ async def stream_random_bytes(n: int):
     pass
 
 
-@router.get('/uuid')
+@router.get(
+    '/uuid',
+    response_class=JSONResponse,
+    name='Return a UUID4.',
+    response_description='A UUID4.'
+)
 async def get_uuid4():
-    """Return a UUID4."""
     out = {'uuid': str(uuid.uuid4())}
     return JSONResponse(content=out)
