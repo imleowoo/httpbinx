@@ -14,6 +14,7 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from starlette.responses import JSONResponse
+from starlette.responses import StreamingResponse
 
 from httpbinx.constants import AWESOME_BASE64ENCODED
 from httpbinx.helpers import to_request_info
@@ -133,23 +134,70 @@ async def link_page(
             ..., ge=1, le=200,  # limit to between 1 and 200 links
             description='Number of links'
         ),
-        offset: int = Path(..., ge=0)
+        offset: int = Path(default=0, ge=0),
 ):
-    pass
+    html = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>Links</title></head>
+    <body>{body}</body>
+    </html>
+    """
+    body = ''
+    link = '<a href="{href}">{text}</a> '
+    for i in range(n):
+        if i == offset:
+            body += f'{i} '
+        else:
+            body += link.format(
+                href=f'/api/links/{n}/{i}',  # TODO how to use router.url_path_for?
+                text=i
+            )
+    return HTMLResponse(content=html.format(body=body))
 
 
-@router.get('/range/{numbytes}')
-async def range_request(numbytes: int):
-    """Streams n random bytes generated with given seed,
-    at given chunk size per packet."""
-    pass
+@router.get(
+    '/range/{numbytes}',
+    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    response_class=StreamingResponse,
+    response_description='Streaming Bytes'
+)
+async def range_request(
+        numbytes: int = Path(
+            ..., ge=1, le=100 * 1024,
+            description='number of bytes must be in the range (0, 102400]'
+        )
+):
+    raise NotImplementedError
 
 
-@router.get('/stream-bytes/{n}')
-async def stream_random_bytes(n: int):
-    """Streams n random bytes generated with given seed,
-    at given chunk size per packet."""
-    pass
+@router.get(
+    '/stream-bytes/{n}',
+    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    response_class=StreamingResponse,
+    response_description='Streaming Bytes'
+)
+async def stream_random_bytes(
+        n: int = Path(
+            ..., ge=1, le=100 * 1024,  # set 100KB limit
+            description='Streams n random bytes generated'
+        ),
+        seed: int = Query(default=None, ge=0),
+        chunk_size: int = Query(default=10 * 1024, ge=1, le=10 * 1024)
+):
+    if seed is not None:
+        random.seed(seed)
+
+    def generate_bytes():
+        chunks = bytearray()
+        for i in range(n):
+            chunks.append(random.randint(0, 255))
+            if len(chunks) == chunk_size:
+                yield bytes(chunks)
+                chunks.clear()
+        if chunks:
+            yield bytes(chunks)
+    return StreamingResponse(content=generate_bytes(), media_type='application/octet-stream')
 
 
 @router.get(
