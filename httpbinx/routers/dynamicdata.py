@@ -55,21 +55,19 @@ async def decode_base64(
     response_description='A delayed response.'
 )
 async def random_bytes(
-        n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),
+        n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),  # set 100KB limit
         seed: int = Query(
             None,
             title='random seed',
             description='Initialize the random number generator'
         )
 ):
-    # set 100KB limit
-    n = min(n, 100 * 1024)
     if seed is not None:
         random.seed(seed)
     # Note: can't just use os.urandom here because it ignores the seed
     # https://docs.python.org/3/library/random.html?highlight=random%20seed#random.seed
     content = bytes(random.randint(0, 255) for _ in range(n))
-    return OctetStreamResponse(content=content)
+    return OctetStreamResponse(content=content)  # TODO use StreamingResponse
 
 
 @router.api_route(
@@ -90,7 +88,7 @@ async def delay_response(
 
 @router.get(
     '/drip',
-    response_class=OctetStreamResponse,
+    response_class=StreamingResponse,
     name='Drips data over a duration after an optional initial delay.',
     response_description='A dripped response.'
 )
@@ -115,11 +113,17 @@ async def drip(
     await asyncio.sleep(delay)
     # Number of seconds to pause during each data generation
     pause = int(duration / numbytes)
-    content = b''
-    for _ in range(numbytes):
-        content += b'*'
-        await asyncio.sleep(pause)
-    return OctetStreamResponse(content=content, status_code=code)
+
+    async def generate_content():
+        for _ in range(numbytes):
+            yield b'*'
+            await asyncio.sleep(pause)
+
+    return StreamingResponse(
+        content=generate_content(),
+        media_type='application/octet-stream',
+        status_code=code
+    )
 
 
 @router.get(
@@ -197,6 +201,7 @@ async def stream_random_bytes(
                 chunks.clear()
         if chunks:
             yield bytes(chunks)
+
     return StreamingResponse(content=generate_bytes(), media_type='application/octet-stream')
 
 
