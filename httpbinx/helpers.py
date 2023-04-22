@@ -59,19 +59,20 @@ def status_code_response(code: int) -> Response:
         ),
         status.HTTP_402_PAYMENT_REQUIRED: dict(
             data='Fuck you, pay me!',
-            headers={'x-more-info': 'http://vimeo.com/22053820'}
+            headers={'x-more-info': 'https://vimeo.com/22053820'}
         ),
-        status.HTTP_406_NOT_ACCEPTABLE: dict(data=json.dumps({
-            'message': 'Client did not request a supported media type.',
-            'accept': ACCEPTED_MEDIA_TYPES
-        }),
+        status.HTTP_406_NOT_ACCEPTABLE: dict(
+            data=json.dumps({
+                'message': 'Client did not request a supported media type.',
+                'accept': ACCEPTED_MEDIA_TYPES
+            }),
             headers={'Content-Type': 'application/json'}),
         status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(
             headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}
         ),
         status.HTTP_418_IM_A_TEAPOT: dict(  # I'm a teapot!
             data=ASCII_ART,
-            headers={'x-more-info': 'http://tools.ietf.org/html/rfc2324'}
+            headers={'x-more-info': 'https://datatracker.ietf.org/doc/html/rfc2324'}
         ),
     }
 
@@ -99,6 +100,7 @@ def weighted_choice(choices):
         weighted_choice([('val1', 5), ('val2', 0.3), ('val3', 1)])
     """
     values, weights = zip(*choices)
+    # TODO Use the `bisect.bisect` method as in the postmanlabs/httpbin project.
     value = random.choices(population=values, weights=weights, k=1)[0]
     return value
 

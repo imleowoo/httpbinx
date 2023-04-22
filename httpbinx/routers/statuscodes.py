@@ -15,7 +15,7 @@ router = APIRouter()
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
     summary='Return status code or random status code '
             'if more than one are given',
-    response_description='TODO'
+    response_description='Response corresponding to different HTTP status codes.'
 )
 async def status_code(
         *,
