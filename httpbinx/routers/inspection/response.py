@@ -16,8 +16,8 @@ router = APIRouter()
 
 @router.get(
     '/cache',
-    name='Returns a 304 if an If-Modified-Since header or If-None-Match'
-         ' is present. Returns the same as a GET otherwise.',
+    summary='Returns a 304 if an If-Modified-Since header or If-None-Match'
+            ' is present. Returns the same as a GET otherwise.',
     response_description='TODO'
 )
 async def cache(request: Request):
@@ -35,7 +35,7 @@ async def cache(request: Request):
 
 @router.get(
     '/cache/{value}',
-    name='Sets a Cache-Control header for n seconds.',
+    summary='Sets a Cache-Control header for n seconds.',
     response_description='Cache control set'
 )
 async def cache_control(
@@ -50,8 +50,8 @@ async def cache_control(
 
 @router.get(
     '/etag/{etag}',
-    name='Assumes the resource has the given etag and responds '
-         'to If-None-Match and If-Match headers appropriately.',
+    summary='Assumes the resource has the given etag and responds '
+            'to If-None-Match and If-Match headers appropriately.',
 )
 async def set_etag(
         *,
@@ -81,7 +81,7 @@ async def set_etag(
 
 @router.api_route(
     '/response-headers',
-    name='Returns a set of response headers from the query string.',
+    summary='Returns a set of response headers from the query string.',
     response_description='Response headers'
 )
 async def response_headers(

@@ -13,7 +13,7 @@ router = APIRouter()
     '/get',
     response_model=RequestInfo,
     response_model_include={'url', 'args', 'headers', 'origin'},
-    name="The request's query parameters.",
+    summary="The request's query parameters.",
     response_description="The request's query parameters."
 )
 async def get(request: Request):
@@ -23,7 +23,7 @@ async def get(request: Request):
 @router.post(
     '/post',
     response_model=RequestInfo,
-    name="The request's POST parameters.",
+    summary="The request's POST parameters.",
     response_description="The request's POST parameters."
 )
 async def post(request: Request):
@@ -33,7 +33,7 @@ async def post(request: Request):
 @router.put(
     '/put',
     response_model=RequestInfo,
-    name="The request's PUT parameters.",
+    summary="The request's PUT parameters.",
     response_description="The request's PUT parameters."
 )
 async def put(request: Request):
@@ -43,7 +43,7 @@ async def put(request: Request):
 @router.delete(
     '/delete',
     response_model=RequestInfo,
-    name="The request's DELETE parameters.",
+    summary="The request's DELETE parameters.",
     response_description="The request's DELETE parameters."
 )
 async def delete(request: Request):
@@ -53,7 +53,7 @@ async def delete(request: Request):
 @router.patch(
     '/patch',
     response_model=RequestInfo,
-    name="The request's PATCH parameters.",
+    summary="The request's PATCH parameters.",
     response_description="The request's PATCH parameters."
 )
 async def patch(request: Request):
