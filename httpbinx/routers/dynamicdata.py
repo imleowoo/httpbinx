@@ -12,7 +12,9 @@ from fastapi import Query
 from fastapi.responses import PlainTextResponse
 from starlette import status
 from starlette.requests import Request
+from starlette.responses import HTMLResponse
 from starlette.responses import JSONResponse
+from starlette.responses import StreamingResponse
 
 from httpbinx.constants import AWESOME_BASE64ENCODED
 from httpbinx.helpers import to_request_info
@@ -53,21 +55,19 @@ async def decode_base64(
     response_description='A delayed response.'
 )
 async def random_bytes(
-        n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),
+        n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),  # set 100KB limit
         seed: int = Query(
             None,
             title='random seed',
             description='Initialize the random number generator'
         )
 ):
-    # set 100KB limit
-    n = min(n, 100 * 1024)
     if seed is not None:
         random.seed(seed)
     # Note: can't just use os.urandom here because it ignores the seed
     # https://docs.python.org/3/library/random.html?highlight=random%20seed#random.seed
     content = bytes(random.randint(0, 255) for _ in range(n))
-    return OctetStreamResponse(content=content)
+    return OctetStreamResponse(content=content)  # TODO use StreamingResponse
 
 
 @router.api_route(
@@ -88,7 +88,7 @@ async def delay_response(
 
 @router.get(
     '/drip',
-    response_class=OctetStreamResponse,
+    response_class=StreamingResponse,
     name='Drips data over a duration after an optional initial delay.',
     response_description='A dripped response.'
 )
@@ -98,7 +98,7 @@ async def drip(
             description='The amount of time (in seconds) over which to drip each byte'
         ),
         numbytes: int = Query(
-            default=10, gt=0, lt=10 * 1024 * 1024,
+            default=10, gt=0, lt=10 * 1024 * 1024,  # set 10MB limit
             description='The number of bytes to respond with',
         ),
         code: int = Query(
@@ -113,39 +113,104 @@ async def drip(
     await asyncio.sleep(delay)
     # Number of seconds to pause during each data generation
     pause = int(duration / numbytes)
-    content = b''
-    for _ in range(numbytes):
-        content += b'*'
-        await asyncio.sleep(pause)
-    return OctetStreamResponse(content=content, status_code=code)
+
+    async def generate_content():
+        for _ in range(numbytes):
+            yield b'*'
+            await asyncio.sleep(pause)
+
+    return StreamingResponse(
+        content=generate_content(),
+        media_type='application/octet-stream',
+        status_code=code
+    )
 
 
-@router.get('/links/{n}/{offset}')
+@router.get(
+    '/links/{n}/{offset}',
+    name='Generate a page containing n links to other pages which do the same.',
+    response_class=HTMLResponse,
+    response_description='HTML links.'
+)
 async def link_page(
         *,
-        n: int = Path(..., ge=1, le=200),
-        offset: int
+        n: int = Path(
+            ..., ge=1, le=200,  # limit to between 1 and 200 links
+            description='Number of links'
+        ),
+        offset: int = Path(default=0, ge=0),
 ):
-    """Generate a page containing n links to other pages which do the same."""
-    pass
+    html = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>Links</title></head>
+    <body>{body}</body>
+    </html>
+    """
+    body = ''
+    link = '<a href="{href}">{text}</a> '
+    for i in range(n):
+        if i == offset:
+            body += f'{i} '
+        else:
+            body += link.format(
+                href=f'/api/links/{n}/{i}',  # TODO how to use router.url_path_for?
+                text=i
+            )
+    return HTMLResponse(content=html.format(body=body))
 
 
-@router.get('/range/{numbytes}')
-async def range_request(numbytes: int):
-    """Streams n random bytes generated with given seed,
-    at given chunk size per packet."""
-    pass
+@router.get(
+    '/range/{numbytes}',
+    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    response_class=StreamingResponse,
+    response_description='Streaming Bytes'
+)
+async def range_request(
+        numbytes: int = Path(
+            ..., ge=1, le=100 * 1024,
+            description='number of bytes must be in the range (0, 102400]'
+        )
+):
+    raise NotImplementedError
 
 
-@router.get('/stream-bytes/{n}')
-async def stream_random_bytes(n: int):
-    """Streams n random bytes generated with given seed,
-    at given chunk size per packet."""
-    pass
+@router.get(
+    '/stream-bytes/{n}',
+    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    response_class=StreamingResponse,
+    response_description='Streaming Bytes'
+)
+async def stream_random_bytes(
+        n: int = Path(
+            ..., ge=1, le=100 * 1024,  # set 100KB limit
+            description='Streams n random bytes generated'
+        ),
+        seed: int = Query(default=None, ge=0),
+        chunk_size: int = Query(default=10 * 1024, ge=1, le=10 * 1024)
+):
+    if seed is not None:
+        random.seed(seed)
+
+    def generate_bytes():
+        chunks = bytearray()
+        for i in range(n):
+            chunks.append(random.randint(0, 255))
+            if len(chunks) == chunk_size:
+                yield bytes(chunks)
+                chunks.clear()
+        if chunks:
+            yield bytes(chunks)
+
+    return StreamingResponse(content=generate_bytes(), media_type='application/octet-stream')
 
 
-@router.get('/uuid')
+@router.get(
+    '/uuid',
+    response_class=JSONResponse,
+    name='Return a UUID4.',
+    response_description='A UUID4.'
+)
 async def get_uuid4():
-    """Return a UUID4."""
     out = {'uuid': str(uuid.uuid4())}
     return JSONResponse(content=out)
