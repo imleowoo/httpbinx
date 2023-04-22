@@ -13,8 +13,8 @@ router = APIRouter()
 @router.api_route(
     '/status/{codes}',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
-    name='Return status code or random status code '
-         'if more than one are given',
+    summary='Return status code or random status code '
+            'if more than one are given',
     response_description='TODO'
 )
 async def status_code(

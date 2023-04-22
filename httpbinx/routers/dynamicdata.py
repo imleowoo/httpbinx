@@ -27,7 +27,7 @@ router = APIRouter()
 @router.get(
     '/base64/{value}',
     response_class=PlainTextResponse,
-    name='Decodes base64url-encoded string.',
+    summary='Decodes base64url-encoded string.',
     response_description='Decoded base64 content.',
 )
 async def decode_base64(
@@ -51,7 +51,7 @@ async def decode_base64(
 @router.get(
     '/bytes/{n}',
     response_class=OctetStreamResponse,
-    name='Returns n random bytes generated with given seed',
+    summary='Returns n random bytes generated with given seed',
     response_description='A delayed response.'
 )
 async def random_bytes(
@@ -74,7 +74,7 @@ async def random_bytes(
     '/delay/{delay}',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
     response_model=RequestInfo,
-    name='Returns a delayed response (max of 10 seconds).',
+    summary='Returns a delayed response (max of 10 seconds).',
     response_description='A delayed response.'
 )
 async def delay_response(
@@ -89,7 +89,7 @@ async def delay_response(
 @router.get(
     '/drip',
     response_class=StreamingResponse,
-    name='Drips data over a duration after an optional initial delay.',
+    summary='Drips data over a duration after an optional initial delay.',
     response_description='A dripped response.'
 )
 async def drip(
@@ -128,7 +128,7 @@ async def drip(
 
 @router.get(
     '/links/{n}/{offset}',
-    name='Generate a page containing n links to other pages which do the same.',
+    summary='Generate a page containing n links to other pages which do the same.',
     response_class=HTMLResponse,
     response_description='HTML links.'
 )
@@ -162,7 +162,7 @@ async def link_page(
 
 @router.get(
     '/range/{numbytes}',
-    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    summary='Streams n random bytes generated with given seed, at given chunk size per packet.',
     response_class=StreamingResponse,
     response_description='Streaming Bytes'
 )
@@ -177,7 +177,7 @@ async def range_request(
 
 @router.get(
     '/stream-bytes/{n}',
-    name='Streams n random bytes generated with given seed, at given chunk size per packet.',
+    summary='Streams n random bytes generated with given seed, at given chunk size per packet.',
     response_class=StreamingResponse,
     response_description='Streaming Bytes'
 )
@@ -208,7 +208,7 @@ async def stream_random_bytes(
 @router.get(
     '/uuid',
     response_class=JSONResponse,
-    name='Return a UUID4.',
+    summary='Return a UUID4.',
     response_description='A UUID4.'
 )
 async def get_uuid4():

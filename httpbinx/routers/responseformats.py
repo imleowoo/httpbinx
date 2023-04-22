@@ -19,7 +19,7 @@ router = APIRouter()
 @router.get(
     '/brotli',
     response_model=RequestInfo,
-    name='Returns Brotli-encoded data.',
+    summary='Returns Brotli-encoded data.',
     response_description='Brotli-encoded data.'
 )
 async def brotli_encoded_content(request: Request):
@@ -33,7 +33,7 @@ async def brotli_encoded_content(request: Request):
 @router.get(
     '/deflate',
     response_model=RequestInfo,
-    name='Returns Deflate-encoded data.',
+    summary='Returns Deflate-encoded data.',
     response_description='Defalte-encoded data.'
 )
 async def deflate_encoded_content(request: Request):
@@ -47,7 +47,7 @@ async def deflate_encoded_content(request: Request):
 @router.get(
     '/gzip',
     response_model=RequestInfo,
-    name='Returns GZip-encoded data.',
+    summary='Returns GZip-encoded data.',
     response_description='GZip-encoded data.'
 )
 async def gzip_encoded_content(request: Request):
@@ -62,7 +62,7 @@ async def gzip_encoded_content(request: Request):
 @router.get(
     '/deny',
     response_class=PlainTextResponse,
-    name='Returns page denied by robots.txt rules.',
+    summary='Returns page denied by robots.txt rules.',
     response_description='Denied message'
 )
 async def deny_page():
@@ -76,7 +76,7 @@ async def deny_page():
 @router.get(
     '/encoding/utf8',
     response_class=HTMLResponse,
-    name='Returns a UTF-8 encoded body.',
+    summary='Returns a UTF-8 encoded body.',
     response_description='Encoded UTF-8 content.'
 )
 async def encoding_utf8():
@@ -87,7 +87,7 @@ async def encoding_utf8():
 @router.get(
     '/html',
     response_class=HTMLResponse,
-    name='Returns a simple HTML document.',
+    summary='Returns a simple HTML document.',
     response_description='An HTML page.'
 )
 async def html_page():
@@ -98,7 +98,7 @@ async def html_page():
 @router.get(
     '/json',
     response_class=JSONResponse,
-    name='Returns a simple JSON document.',
+    summary='Returns a simple JSON document.',
     response_description='An JSON document.'
 )
 async def json_endpoint():
@@ -125,7 +125,7 @@ async def json_endpoint():
 @router.get(
     '/robot.txt',
     response_class=PlainTextResponse,
-    name='Returns some robots.txt rules.',
+    summary='Returns some robots.txt rules.',
     response_description='Robots file'
 )
 async def robots_page():
@@ -136,7 +136,7 @@ async def robots_page():
 @router.get(
     '/xml',
     response_class=Response,
-    name='Returns a simple XML document.',
+    summary='Returns a simple XML document.',
     response_description='An XML document.'
 )
 async def xml():
