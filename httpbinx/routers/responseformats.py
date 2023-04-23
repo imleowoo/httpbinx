@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Response Formats"""
+import brotli
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import HTMLResponse
 from fastapi.responses import PlainTextResponse
 from fastapi.responses import Response
@@ -10,7 +12,7 @@ from starlette.responses import JSONResponse
 
 from httpbinx.constants import ANGRY_ASCII
 from httpbinx.constants import ROBOT_TXT
-from httpbinx.helpers import request_attrs_response
+from httpbinx.helpers import request_attrs_response, to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
@@ -18,16 +20,21 @@ router = APIRouter()
 
 @router.get(
     '/brotli',
-    response_model=RequestInfo,
     summary='Returns Brotli-encoded data.',
+    response_model=RequestInfo,
+    response_class=JSONResponse,
+    response_model_include={'origin', 'headers', 'method', 'extras'},
     response_description='Brotli-encoded data.'
 )
 async def brotli_encoded_content(request: Request):
-    return request_attrs_response(
-        request,
-        keys=('origin', 'headers', 'method'),
-        brotli=True
-    )
+    info = to_request_info(request, brotli=True)
+    response = JSONResponse(jsonable_encoder(info))
+    content = response.body or b''
+    compressed = brotli.compress(content)
+    response.body = compressed
+    response.headers['Content-Encoding'] = 'br'
+    response.headers['Content-Length'] = str(len(compressed))
+    return response
 
 
 @router.get(

@@ -3,6 +3,7 @@ import json
 import random
 import re
 
+import brotli
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -15,10 +16,13 @@ from httpbinx.schemas import RequestAttrs
 from httpbinx.schemas import RequestInfo
 
 
-def to_request_info(request: Request) -> RequestInfo:
+def to_request_info(request: Request, **extras) -> RequestInfo:
     """Returns model RequestInfo instance"""
     attrs = RequestAttrs(request=request)
-    return attrs.request_info
+    info = attrs.request_info
+    if extras:
+        info.extras.update(extras)
+    return info
 
 
 def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:
