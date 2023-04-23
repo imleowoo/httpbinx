@@ -12,7 +12,8 @@ from starlette.responses import JSONResponse
 
 from httpbinx.constants import ANGRY_ASCII
 from httpbinx.constants import ROBOT_TXT
-from httpbinx.helpers import request_attrs_response, to_request_info
+from httpbinx.helpers import request_attrs_response
+from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
@@ -29,8 +30,7 @@ router = APIRouter()
 async def brotli_encoded_content(request: Request):
     info = to_request_info(request, brotli=True)
     response = JSONResponse(jsonable_encoder(info))
-    content = response.body or b''
-    compressed = brotli.compress(content)
+    compressed = brotli.compress(response.body or b'')
     response.body = compressed
     response.headers['Content-Encoding'] = 'br'
     response.headers['Content-Length'] = str(len(compressed))
@@ -39,16 +39,16 @@ async def brotli_encoded_content(request: Request):
 
 @router.get(
     '/deflate',
-    response_model=RequestInfo,
     summary='Returns Deflate-encoded data.',
+    response_model=RequestInfo,
+    response_class=JSONResponse,
+    response_model_include={'origin', 'headers', 'method', 'extras'},
     response_description='Defalte-encoded data.'
 )
 async def deflate_encoded_content(request: Request):
-    return request_attrs_response(
-        request,
-        keys=('origin', 'headers', 'method'),
-        deflated=True
-    )
+    info = to_request_info(request, deflated=True)
+    response = JSONResponse(jsonable_encoder(info))
+    return response
 
 
 @router.get(
