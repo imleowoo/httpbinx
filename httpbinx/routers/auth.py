@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """Auth"""
 from fastapi import APIRouter
-from starlette.requests import Request
-from starlette.responses import JSONResponse
+from fastapi import HTTPException
+from fastapi.security import HTTPBasic
+from fastapi.security import HTTPBasicCredentials
 
 router = APIRouter()
+security = HTTPBasic()
 
 
 @router.get(
@@ -15,6 +17,9 @@ router = APIRouter()
 async def basic_auth(
         user: str,
         password: str,
-        request: Request
-) -> JSONResponse:
-    pass
+        credentials: HTTPBasicCredentials = security
+):
+    if not (credentials and credentials.username == user and credentials.password == password):
+        raise HTTPException(status_code=401)
+
+    return {'authenticated': True, 'user': user}
