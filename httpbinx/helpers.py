@@ -3,10 +3,8 @@ import json
 import random
 import re
 
-import brotli
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 from starlette.responses import Response
 
 from httpbinx.constants import ACCEPTED_MEDIA_TYPES
@@ -23,26 +21,6 @@ def to_request_info(request: Request, **extras) -> RequestInfo:
     if extras:
         info.extras.update(extras)
     return info
-
-
-def get_request_attrs(request: Request, keys: tuple = None, **extras) -> dict:
-    """Returns request attrs of given keys"""
-    properties = RequestInfo.get_properties()
-    if keys:
-        assert all(map(lambda k: k in properties, keys))
-    else:
-        keys = properties
-
-    info = to_request_info(request)
-    data = info.dict(include=set(keys))
-    data.update(extras)
-    return data
-
-
-def request_attrs_response(request: Request, keys, **extras) -> JSONResponse:
-    """Returns json response object of give keys about request attributes"""
-    attrs = get_request_attrs(request, keys, **extras)
-    return JSONResponse(content=attrs)
 
 
 def status_code_response(code: int) -> Response:

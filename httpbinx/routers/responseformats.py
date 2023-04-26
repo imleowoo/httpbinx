@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """Response Formats"""
+import gzip
+import zlib
+
 import brotli
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
@@ -12,7 +15,6 @@ from starlette.responses import JSONResponse
 
 from httpbinx.constants import ANGRY_ASCII
 from httpbinx.constants import ROBOT_TXT
-from httpbinx.helpers import request_attrs_response
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
@@ -48,6 +50,12 @@ async def brotli_encoded_content(request: Request):
 async def deflate_encoded_content(request: Request):
     info = to_request_info(request, deflated=True)
     response = JSONResponse(jsonable_encoder(info))
+    obj = zlib.compressobj()
+    deflated = obj.compress(response.body or b'')
+    deflated += obj.flush()
+    response.body = deflated
+    response.headers['Content-Encoding'] = 'deflate'
+    response.headers['Content-Length'] = str(len(deflated))
     return response
 
 
@@ -58,12 +66,13 @@ async def deflate_encoded_content(request: Request):
     response_description='GZip-encoded data.'
 )
 async def gzip_encoded_content(request: Request):
-    """Returns Gzip-encoded data."""
-    return request_attrs_response(
-        request,
-        keys=('origin', 'headers', 'method'),
-        gzipped=True
-    )
+    info = to_request_info(request, gzipped=True)
+    response = JSONResponse(jsonable_encoder(info))
+    compressed = gzip.compress(response.body or b'')
+    response.body = compressed
+    response.headers['Content-Encoding'] = 'gzip'
+    response.headers['Content-Length'] = str(len(compressed))
+    return response
 
 
 @router.get(
