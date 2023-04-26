@@ -12,7 +12,8 @@ install_requires = [
     'fastapi',
     'pydantic',
     'uvicorn',
-    'starlette'
+    'starlette',
+    'brotli'
 ]
 
 setup(

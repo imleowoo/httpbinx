@@ -44,7 +44,8 @@ class RequestInfo(BaseModel):
     json_data: Optional[Union[str, list]] = Field(
         None, alias='json', title='Content-Type: application/json'
     )
-    method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request method')
+    method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request Method')
+    extras: dict = Field(default_factory=dict, title='The Other Information')
 
     @classmethod
     def get_properties(cls):
