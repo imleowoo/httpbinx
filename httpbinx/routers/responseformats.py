@@ -5,6 +5,7 @@ import zlib
 
 import brotli
 from fastapi import APIRouter
+from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import HTMLResponse
 from fastapi.responses import PlainTextResponse
@@ -12,9 +13,11 @@ from fastapi.responses import Response
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from starlette.templating import Jinja2Templates
 
 from httpbinx.constants import ANGRY_ASCII
 from httpbinx.constants import ROBOT_TXT
+from httpbinx.helpers import get_templates
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
@@ -91,13 +94,14 @@ async def deny_page():
 
 @router.get(
     '/encoding/utf8',
-    response_class=HTMLResponse,
+    response_class=PlainTextResponse,
     summary='Returns a UTF-8 encoded body.',
     response_description='Encoded UTF-8 content.'
 )
 async def encoding_utf8():
-    # TODO How to set Jinja2Templates
-    pass
+    # UTF-8 demo content
+    with open(file='static/UTF-8-demo.txt', encoding='utf-8') as utf8f:
+        return PlainTextResponse(content=utf8f.read())
 
 
 @router.get(
@@ -106,9 +110,14 @@ async def encoding_utf8():
     summary='Returns a simple HTML document.',
     response_description='An HTML page.'
 )
-async def html_page():
-    """Returns a simple HTML document."""
-    pass
+async def html_page(
+        request: Request,
+        templates: Jinja2Templates = Depends(get_templates)
+):
+    return templates.TemplateResponse(
+        'moby.html',
+        context={'request': request},
+    )
 
 
 @router.get(
@@ -118,7 +127,6 @@ async def html_page():
     response_description='An JSON document.'
 )
 async def json_endpoint():
-    """Returns a simple JSON document."""
     json_doc = {
         'title': 'Sample Slide Show',
         'date': 'date of publication',
@@ -155,8 +163,12 @@ async def robots_page():
     summary='Returns a simple XML document.',
     response_description='An XML document.'
 )
-async def xml():
-    """Returns a simple XML document."""
-    # TODO load xml document
-    response = Response(media_type='application/xml')
-    return response
+async def xml(
+        request: Request,
+        templates: Jinja2Templates = Depends(get_templates)
+):
+    return templates.TemplateResponse(
+        'sample.xml',
+        context={'request': request},
+        media_type='application/xml'
+    )

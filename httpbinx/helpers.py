@@ -6,12 +6,21 @@ import re
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response
+from starlette.templating import Jinja2Templates
 
 from httpbinx.constants import ACCEPTED_MEDIA_TYPES
 from httpbinx.constants import ASCII_ART
 from httpbinx.constants import REDIRECT_LOCATION
 from httpbinx.schemas import RequestAttrs
 from httpbinx.schemas import RequestInfo
+
+# init Jinja2
+_templates = Jinja2Templates(directory='templates')
+
+
+def get_templates() -> Jinja2Templates:
+    """Dependency function that creates and returns a Jinja2 templates instance"""
+    return _templates
 
 
 def to_request_info(request: Request, **extras) -> RequestInfo:
