@@ -4,13 +4,18 @@ from os import path
 
 from fastapi import APIRouter
 from starlette.requests import Request
+from starlette.responses import FileResponse
 from starlette.status import HTTP_406_NOT_ACCEPTABLE
 
 from httpbinx.helpers import status_code_response
-from httpbinx.responses import ImageResponse
-from httpbinx.utils import get_templates_abspath
 
-images_path = get_templates_abspath('images')
+
+class ImageResponse(FileResponse):
+    """set response headers Content-Type: image/* """
+    media_type = 'image/*'
+
+
+images_path = path.join('static', 'images')
 
 router = APIRouter(default_response_class=ImageResponse)
 

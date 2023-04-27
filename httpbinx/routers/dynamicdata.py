@@ -14,14 +14,19 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from starlette.responses import JSONResponse
+from starlette.responses import Response
 from starlette.responses import StreamingResponse
 
 from httpbinx.constants import AWESOME_BASE64ENCODED
 from httpbinx.helpers import to_request_info
-from httpbinx.responses import OctetStreamResponse
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter()
+
+
+class OctetStreamResponse(Response):
+    """set response headers Content-Type: application/octet-stream"""
+    media_type = 'application/octet-stream'
 
 
 @router.get(

@@ -10,7 +10,7 @@ from pydantic import Field
 from starlette.requests import Request
 
 
-class HTTPMethods(str, Enum):
+class HTTPMethod(str, Enum):
     """ HTTP request methods
 
     References:
@@ -44,7 +44,7 @@ class RequestInfo(BaseModel):
     json_data: Optional[Union[str, list]] = Field(
         None, alias='json', title='Content-Type: application/json'
     )
-    method: HTTPMethods = Field(HTTPMethods.get, title='HTTP Request Method')
+    method: HTTPMethod = Field(HTTPMethod.get, title='HTTP Request Method')
     extras: dict = Field(default_factory=dict, title='The Other Information')
 
     @classmethod
