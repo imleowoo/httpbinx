@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Cookies"""
 from fastapi import APIRouter
+from fastapi import Query
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.responses import RedirectResponse
@@ -14,15 +15,21 @@ router = APIRouter()
 @router.get(
     '/cookies',
     summary='Returns cookie data.',
-    response_description='Set cookies.'
+    response_description='Set cookies.',
+    response_class=JSONResponse,
+
 )
 async def cookies(
         *,
-        show_env: bool = False,
+        show_env: bool = Query(
+            default=False,
+            title='Show Environment variable?',
+            include_in_schema=False
+        ),
         request: Request
-) -> JSONResponse:
+):
     resp = JSONResponse(content={'cookies': RequestAttrs(request).cookies})
-    if show_env:
+    if not show_env:
         for key in ENV_COOKIES:
             resp.delete_cookie(key)
     return resp
