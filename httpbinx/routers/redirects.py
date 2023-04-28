@@ -18,6 +18,22 @@ class RedirectTypes(str, Enum):
     RELATIVE = 'relative_redirect'
 
 
+@router.get(
+    '/absolute-redirect/{n}',
+    summary='Absolutely 302 Redirects n times.',
+    response_description='A redirection.',
+    response_class=RedirectResponse,
+)
+async def absolute_redirect_n_times(
+        *,
+        n: int = Path(..., title='Redirects n times.', gt=0, le=10),
+        request: Request
+):
+    if n == 1:
+        return RedirectResponse(request.url_for('get'))
+    return _redirect(request, type_=RedirectTypes.ABSOLUTE, n=n)
+
+
 @router.api_route(
     '/redirect-to',
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
@@ -64,22 +80,6 @@ async def redirect_n_times(
 
 
 @router.get(
-    '/absolute-redirect/{n}',
-    summary='Absolutely 302 Redirects n times.',
-    response_description='A redirection.',
-    response_class=RedirectResponse,
-)
-async def absolute_redirect_n_times(
-        *,
-        n: int = Path(..., title='Redirects n times.', gt=0, le=10),
-        request: Request
-):
-    if n == 1:
-        return RedirectResponse(request.url_for('get'))
-    return _redirect(request, type_=RedirectTypes.ABSOLUTE, n=n)
-
-
-@router.get(
     '/relative-redirect/{n}',
     summary='Relatively 302 Redirects n times.',
     response_description='A redirection.'
@@ -100,5 +100,6 @@ async def relative_redirect_n_times(
 
 def _redirect(request: Request, type_: RedirectTypes, n: int):
     # TODO external
+    # "absolute_redirect" and "relative_redirect" options are not effective.
     func_prefix = f'{type_}_n_times'
     return RedirectResponse(request.url_for(func_prefix, n=n - 1))
