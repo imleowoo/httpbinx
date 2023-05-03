@@ -7,7 +7,7 @@ from starlette.responses import Response
 from httpbinx.helpers import status_code_response
 from httpbinx.helpers import weighted_choice
 
-router = APIRouter()
+router = APIRouter(tags=['Status Codes'])
 
 
 @router.api_route(

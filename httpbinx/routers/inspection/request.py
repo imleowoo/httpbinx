@@ -7,7 +7,7 @@ from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestAttrs
 from httpbinx.schemas import RequestInfo
 
-router = APIRouter()
+router = APIRouter(tags=['Request inspection'])
 
 
 @router.get(

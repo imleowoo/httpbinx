@@ -9,7 +9,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.responses import Response
 
-router = APIRouter()
+router = APIRouter(tags=['Redirects'])
 
 
 class RedirectTypes(str, Enum):

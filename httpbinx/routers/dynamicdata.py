@@ -21,7 +21,7 @@ from httpbinx.constants import AWESOME_BASE64ENCODED
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
-router = APIRouter()
+router = APIRouter(tags=['Dynamic data'])
 
 
 class OctetStreamResponse(Response):
@@ -143,7 +143,7 @@ async def link_page(
             ..., ge=1, le=200,  # limit to between 1 and 200 links
             description='Number of links'
         ),
-        offset: int = Path(default=0, ge=0),
+        offset: int = Path(..., ge=0),
 ):
     html = """
     <!DOCTYPE html>

@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from fastapi.security import HTTPBasic
 from fastapi.security import HTTPBasicCredentials
 
-router = APIRouter()
+router = APIRouter(tags=['Auth'],)
 security = HTTPBasic()
 
 

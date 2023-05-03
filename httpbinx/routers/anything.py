@@ -5,7 +5,7 @@ from starlette.requests import Request
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
-router = APIRouter()
+router = APIRouter(tags=['Anything'])
 
 
 @router.api_route(

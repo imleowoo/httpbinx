@@ -22,4 +22,5 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-app.include_router(router=router, prefix='/api')
+# app.openapi_tags = []
+app.include_router(router=router)
