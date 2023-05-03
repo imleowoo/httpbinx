@@ -30,8 +30,8 @@ jobs:
           python -m pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Lint with flake8
+        # Read configuration from the `.flake8` file
         run: |
-          # read file `.flake8`
           flake8 .
 #      - name: Test with pytest
 #        run: |
