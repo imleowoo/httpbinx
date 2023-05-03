@@ -17,7 +17,10 @@ class ImageResponse(FileResponse):
 
 images_path = path.join('static', 'images')
 
-router = APIRouter(default_response_class=ImageResponse)
+router = APIRouter(
+    tags=['Images'],
+    default_response_class=ImageResponse
+)
 
 
 @router.get(

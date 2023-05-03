@@ -21,7 +21,7 @@ from httpbinx.helpers import get_templates
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
-router = APIRouter()
+router = APIRouter(tags=['Response formats'])
 
 
 @router.get(

@@ -9,7 +9,7 @@ from starlette.responses import RedirectResponse
 
 from httpbinx.constants import ENV_COOKIES
 
-router = APIRouter()
+router = APIRouter(tags=['Cookies'])
 
 
 @router.get(

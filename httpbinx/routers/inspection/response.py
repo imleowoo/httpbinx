@@ -11,7 +11,7 @@ from httpbinx.helpers import parse_multi_value_header
 from httpbinx.helpers import status_code_response
 from httpbinx.routers import httpmethods
 
-router = APIRouter()
+router = APIRouter(tags=['Response inspection'],)
 
 
 @router.get(
