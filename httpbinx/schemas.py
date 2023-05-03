@@ -131,11 +131,6 @@ class RequestAttrs:
         return self.request.headers.get('User-Agent')
 
     @property
-    def cookies(self) -> dict:
-        """request cookies"""
-        return self.request.cookies
-
-    @property
     @lru_cache(maxsize=1)
     def request_info(self) -> RequestInfo:
         """fastapi object `Request` to model `RequestInfo`"""
