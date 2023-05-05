@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from os import path
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
@@ -12,7 +14,11 @@ app = FastAPI(
     docs_url='/',  # swagger docs page url
 )
 
-app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount(
+    '/static',
+    StaticFiles(directory=path.join(path.dirname(__file__), 'static')),
+    name='static'
+)
 
 app.add_middleware(
     CORSMiddleware,
