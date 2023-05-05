@@ -13,7 +13,8 @@ install_requires = [
     'pydantic',
     'uvicorn',
     'starlette',
-    'brotli'
+    'jinja2',
+    'brotli',
 ]
 
 setup(
