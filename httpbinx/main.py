@@ -12,6 +12,7 @@ app = FastAPI(
     description='HTTP Request & Response Service, '
                 'written in Python + FastAPI.',
     docs_url='/',  # swagger docs page url
+    swagger_ui_parameters={'docExpansion': 'none'},
 )
 
 app.mount(
