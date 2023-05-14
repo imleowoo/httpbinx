@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from os.path import dirname
-from os.path import join
+from pathlib import Path
 
 from setuptools import find_packages
 from setuptools import setup
 
-with open(join(dirname(__file__), 'httpbinx', 'VERSION'), 'r') as vf:
-    version = vf.read().strip()
+version = (Path(__file__).parent / 'httpbinx' / 'VERSION').read_text('ascii').strip()
 
 install_requires = [
     'fastapi',
