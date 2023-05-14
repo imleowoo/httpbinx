@@ -1,5 +1,7 @@
+![cover](httpbinx/static/images/httpbinx_cover.png)
+
 # httpbinx
-HTTP Request &amp; Response Service, written in Python + FastAPI.
+HTTP Request & Response Service, written in Python + FastAPI.
 
 ## Reference project
 
@@ -14,9 +16,9 @@ $ python setup.py install
 $ uvicorn httpbinx:app --host=0.0.0.0 --port=80
 ```
 
-### ~~Run with Docker~~
+### Run with Docker
 
 ```shell
 $ docker pull leowoo/httpbinx:latest
-$ docker run -d -p 80:8000 --name httpbinx leowoo/httpbinx:latest
+$ docker run -p 80:80 --name httpbinx leowoo/httpbinx:latest
 ```
