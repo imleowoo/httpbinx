@@ -15,6 +15,14 @@ install_requires = [
     'brotli',
 ]
 
+test_requirements = [
+    'httpx',  # https://fastapi.tiangolo.com/tutorial/testing/
+    'pytest-cov',
+    'pytest-mock',
+    'pytest-xdist',
+    'pytest',
+]
+
 setup(
     name='httpbinx',
     version=version,
@@ -42,12 +50,14 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     packages=find_packages(
         include=['httpbinx'],
     ),
     include_package_data=True,
     install_requires=install_requires,
+    tests_require=test_requirements,
     python_requires='>=3.6',
     project_urls={
         'Source': 'https://github.com/imleowoo/httpbinx',
