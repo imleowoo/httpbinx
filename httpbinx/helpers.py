@@ -23,10 +23,10 @@ def get_templates() -> Jinja2Templates:
     return _templates
 
 
-def to_request_info(request: Request, **extras) -> RequestInfo:
+async def to_request_info(request: Request, **extras) -> RequestInfo:
     """Returns model RequestInfo instance"""
     attrs = RequestAttrs(request=request)
-    info = attrs.request_info
+    info = await attrs.request_info()
     if extras:
         info.extras.update(extras)
     return info
@@ -37,7 +37,7 @@ def status_code_response(code: int) -> Response:
     # sample redirect
     redirect = dict(headers=dict(location=REDIRECT_LOCATION))
 
-    # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
     code_map = {
         status.HTTP_301_MOVED_PERMANENTLY: redirect,
         status.HTTP_302_FOUND: redirect,

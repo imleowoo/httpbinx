@@ -16,4 +16,4 @@ router = APIRouter(tags=['Anything'])
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']
 )
 async def anything(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)

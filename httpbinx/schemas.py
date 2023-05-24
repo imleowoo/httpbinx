@@ -36,10 +36,9 @@ class RequestInfo(BaseModel):
 
     url: AnyHttpUrl = Field(title='Request URL')
     args: dict = Field(default_factory=dict, title='Request Args')
-    form: dict = Field(default_factory=dict, title='Request Form')
-    data: str = Field('', title='Request Data')
     headers: dict = Field(default_factory=dict, title='Request Headers')
     origin: str = Field('', title="Client's IP")
+    form: dict = Field(default_factory=dict, title='Request Form')
     files: dict = Field(default_factory=dict, title='Upload Files')
     json_data: Optional[Union[str, list]] = Field(
         None, alias='json', title='Content-Type: application/json'
@@ -95,16 +94,6 @@ class RequestAttrs:
         return out
 
     @property
-    def form(self):
-        """TODO request form"""
-        return dict()
-
-    @property
-    def data(self):
-        """TODO request data."""
-        return ''
-
-    @property
     def headers(self):
         """request headers."""
         # TODO CaseInsensitiveDict
@@ -116,32 +105,35 @@ class RequestAttrs:
         return self.request.client.host
 
     @property
-    def files(self):
-        """TODO request files."""
-        return ''
+    async def form(self):
+        """request form-data"""
+        return await self.request.form()
 
     @property
-    def json(self):
-        """TODO request json."""
-        return None
+    async def json(self):
+        """request json."""
+        # return await self.request.json()
+        return {}
+
+    @property
+    async def files(self):
+        """TODO request files."""
+        return ''
 
     @property
     def user_agent(self) -> str:
         """request headers User-Agent"""
         return self.request.headers.get('User-Agent')
 
-    @property
-    @lru_cache(maxsize=1)
-    def request_info(self) -> RequestInfo:
+    async def request_info(self) -> RequestInfo:
         """fastapi object `Request` to model `RequestInfo`"""
         return RequestInfo(
             url=self.url,
             args=self.args,
-            form=self.form,
-            data=self.data,
+            form=await self.form,
             headers=self.headers,
             origin=self.client_host,
-            files=self.files,
-            json_data=self.json,
+            files=await self.files,
+            json_data=await self.json,
             method=self.method,
         )

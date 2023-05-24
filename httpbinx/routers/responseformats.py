@@ -33,7 +33,7 @@ router = APIRouter(tags=['Response formats'])
     response_description='Brotli-encoded data.'
 )
 async def brotli_encoded_content(request: Request):
-    info = to_request_info(request, brotli=True)
+    info = await to_request_info(request, brotli=True)
     response = JSONResponse(jsonable_encoder(info))
     compressed = brotli.compress(response.body or b'')
     response.body = compressed
@@ -51,7 +51,7 @@ async def brotli_encoded_content(request: Request):
     response_description='Defalte-encoded data.'
 )
 async def deflate_encoded_content(request: Request):
-    info = to_request_info(request, deflated=True)
+    info = await to_request_info(request, deflated=True)
     response = JSONResponse(jsonable_encoder(info))
     obj = zlib.compressobj()
     deflated = obj.compress(response.body or b'')
@@ -69,7 +69,7 @@ async def deflate_encoded_content(request: Request):
     response_description='GZip-encoded data.'
 )
 async def gzip_encoded_content(request: Request):
-    info = to_request_info(request, gzipped=True)
+    info = await to_request_info(request, gzipped=True)
     response = JSONResponse(jsonable_encoder(info))
     compressed = gzip.compress(response.body or b'')
     response.body = compressed

@@ -6,7 +6,7 @@ from starlette.requests import Request
 from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
-router = APIRouter(tags=['HTTP Methods'],)
+router = APIRouter(tags=['HTTP Methods'])
 
 
 @router.get(
@@ -17,7 +17,7 @@ router = APIRouter(tags=['HTTP Methods'],)
     response_description="The request's query parameters."
 )
 async def get(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.post(
@@ -27,7 +27,7 @@ async def get(request: Request):
     response_description="The request's POST parameters."
 )
 async def post(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.put(
@@ -37,7 +37,7 @@ async def post(request: Request):
     response_description="The request's PUT parameters."
 )
 async def put(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.delete(
@@ -47,7 +47,7 @@ async def put(request: Request):
     response_description="The request's DELETE parameters."
 )
 async def delete(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.patch(
@@ -57,4 +57,4 @@ async def delete(request: Request):
     response_description="The request's PATCH parameters."
 )
 async def patch(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
