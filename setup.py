@@ -16,7 +16,7 @@ install_requires = [
     'python-multipart'
 ]
 
-test_requirements = [
+test_require = [
     'httpx',  # https://fastapi.tiangolo.com/tutorial/testing/
     'pytest-cov',
     'pytest-mock',
@@ -47,7 +47,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -59,8 +58,8 @@ setup(
     ),
     include_package_data=True,
     install_requires=install_requires,
-    tests_require=test_requirements,
-    python_requires='>=3.6',
+    tests_require=test_require,
+    python_requires='>=3.7',
     project_urls={
         'Source': 'https://github.com/imleowoo/httpbinx',
     },
