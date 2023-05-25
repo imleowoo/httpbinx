@@ -29,7 +29,8 @@ setup(
     version=version,
     description='HTTP Request & Response Service, '
                 'written in Python + FastAPI.',
-    long_description='',
+    long_description=open('README.md', encoding='utf-8').read(),
+    long_description_content_type='text/markdown',
     # The project URL
     url='https://github.com/imleowoo/httpbinx',
 
