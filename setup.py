@@ -13,6 +13,7 @@ install_requires = [
     'starlette',
     'jinja2',
     'brotli',
+    'python-multipart'
 ]
 
 test_requirements = [

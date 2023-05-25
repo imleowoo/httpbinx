@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
 from functools import lru_cache
-from typing import Optional
+import json
 from typing import Union
 
 from pydantic import AnyHttpUrl
@@ -39,8 +39,9 @@ class RequestInfo(BaseModel):
     headers: dict = Field(default_factory=dict, title='Request Headers')
     origin: str = Field('', title="Client's IP")
     form: dict = Field(default_factory=dict, title='Request Form')
+    data: Union[str, bytes] = Field('', title='Request Data')
     files: dict = Field(default_factory=dict, title='Upload Files')
-    json_data: Optional[Union[str, list]] = Field(
+    json_data: Union[dict, list, str] = Field(
         None, alias='json', title='Content-Type: application/json'
     )
     method: HTTPMethod = Field(HTTPMethod.get, title='HTTP Request Method')
@@ -105,20 +106,27 @@ class RequestAttrs:
         return self.request.client.host
 
     @property
+    async def data(self):
+        """request data"""
+        return await self.request.body()
+
+    @property
     async def form(self):
         """request form-data"""
         return await self.request.form()
 
     @property
     async def json(self):
-        """request json."""
-        # return await self.request.json()
-        return {}
+        """request json"""
+        try:
+            return await self.request.json()
+        except json.decoder.JSONDecodeError:
+            pass
 
     @property
     async def files(self):
         """TODO request files."""
-        return ''
+        return {}
 
     @property
     def user_agent(self) -> str:
@@ -130,10 +138,11 @@ class RequestAttrs:
         return RequestInfo(
             url=self.url,
             args=self.args,
-            form=await self.form,
             headers=self.headers,
             origin=self.client_host,
+            data=await self.data,
+            form=await self.form,
             files=await self.files,
-            json_data=await self.json,
+            json=await self.json,
             method=self.method,
         )

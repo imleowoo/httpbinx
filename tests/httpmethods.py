@@ -15,14 +15,20 @@ def test_get():
 def test_post():
     from datetime import datetime
 
-    json_data = form_data = {
+    data = {
         'name': 'Albert Einstein',
         'age': str(datetime.now().year - 1879)
     }
+    # string or bytes
+    str_or_bytes = b'httpbinx'
+    response = client.post('/post', content=str_or_bytes)
+    target = str_or_bytes.decode() if isinstance(str_or_bytes, bytes) else str_or_bytes
+    assert response.json()['data'] == target
+
     # application/x-www-form-urlencoded
-    response = client.post('/post', data=form_data.copy())
-    assert response.json()['form'] == form_data
+    response = client.post('/post', data=data.copy())
+    assert response.json()['form'] == data
 
     # application/json
-    response = client.post('/post', json=json_data.copy())
-    assert response.json()['json'] == json_data
+    response = client.post('/post', json=data.copy())
+    assert response.json()['json'] == data

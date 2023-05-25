@@ -25,6 +25,7 @@ def get_templates() -> Jinja2Templates:
 
 async def to_request_info(request: Request, **extras) -> RequestInfo:
     """Returns model RequestInfo instance"""
+    await request.body()  # Note: Execute `.stream()` only once.
     attrs = RequestAttrs(request=request)
     info = await attrs.request_info()
     if extras:
