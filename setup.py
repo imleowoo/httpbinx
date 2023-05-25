@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from os.path import dirname
-from os.path import join
+from pathlib import Path
 
 from setuptools import find_packages
 from setuptools import setup
 
-with open(join(dirname(__file__), 'httpbinx', 'VERSION'), 'r') as vf:
-    version = vf.read().strip()
+version = (Path(__file__).parent / 'httpbinx' / 'VERSION').read_text('ascii').strip()
 
 install_requires = [
     'fastapi',
@@ -15,6 +13,15 @@ install_requires = [
     'starlette',
     'jinja2',
     'brotli',
+    'python-multipart'
+]
+
+test_requirements = [
+    'httpx',  # https://fastapi.tiangolo.com/tutorial/testing/
+    'pytest-cov',
+    'pytest-mock',
+    'pytest-xdist',
+    'pytest',
 ]
 
 setup(
@@ -45,12 +52,14 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     packages=find_packages(
         include=['httpbinx'],
     ),
     include_package_data=True,
     install_requires=install_requires,
+    tests_require=test_requirements,
     python_requires='>=3.6',
     project_urls={
         'Source': 'https://github.com/imleowoo/httpbinx',

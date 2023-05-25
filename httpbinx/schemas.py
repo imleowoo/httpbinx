@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
 from functools import lru_cache
-from typing import Optional
+import json
 from typing import Union
 
 from pydantic import AnyHttpUrl
@@ -36,12 +36,12 @@ class RequestInfo(BaseModel):
 
     url: AnyHttpUrl = Field(title='Request URL')
     args: dict = Field(default_factory=dict, title='Request Args')
-    form: dict = Field(default_factory=dict, title='Request Form')
-    data: str = Field('', title='Request Data')
     headers: dict = Field(default_factory=dict, title='Request Headers')
     origin: str = Field('', title="Client's IP")
+    form: dict = Field(default_factory=dict, title='Request Form')
+    data: Union[str, bytes] = Field('', title='Request Data')
     files: dict = Field(default_factory=dict, title='Upload Files')
-    json_data: Optional[Union[str, list]] = Field(
+    json_data: Union[dict, list, str] = Field(
         None, alias='json', title='Content-Type: application/json'
     )
     method: HTTPMethod = Field(HTTPMethod.get, title='HTTP Request Method')
@@ -95,16 +95,6 @@ class RequestAttrs:
         return out
 
     @property
-    def form(self):
-        """TODO request form"""
-        return dict()
-
-    @property
-    def data(self):
-        """TODO request data."""
-        return ''
-
-    @property
     def headers(self):
         """request headers."""
         # TODO CaseInsensitiveDict
@@ -116,32 +106,43 @@ class RequestAttrs:
         return self.request.client.host
 
     @property
-    def files(self):
-        """TODO request files."""
-        return ''
+    async def data(self):
+        """request data"""
+        return await self.request.body()
 
     @property
-    def json(self):
-        """TODO request json."""
-        return None
+    async def form(self):
+        """request form-data"""
+        return await self.request.form()
+
+    @property
+    async def json(self):
+        """request json"""
+        try:
+            return await self.request.json()
+        except json.decoder.JSONDecodeError:
+            pass
+
+    @property
+    async def files(self):
+        """TODO request files."""
+        return {}
 
     @property
     def user_agent(self) -> str:
         """request headers User-Agent"""
         return self.request.headers.get('User-Agent')
 
-    @property
-    @lru_cache(maxsize=1)
-    def request_info(self) -> RequestInfo:
+    async def request_info(self) -> RequestInfo:
         """fastapi object `Request` to model `RequestInfo`"""
         return RequestInfo(
             url=self.url,
             args=self.args,
-            form=self.form,
-            data=self.data,
             headers=self.headers,
             origin=self.client_host,
-            files=self.files,
-            json_data=self.json,
+            data=await self.data,
+            form=await self.form,
+            files=await self.files,
+            json=await self.json,
             method=self.method,
         )

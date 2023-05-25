@@ -88,7 +88,7 @@ async def delay_response(
         request: Request
 ):
     await asyncio.sleep(delay)
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.get(

@@ -18,7 +18,7 @@ router = APIRouter(tags=['Request inspection'])
     response_description="The request's headers.",
 )
 async def headers(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.get(
@@ -29,7 +29,7 @@ async def headers(request: Request):
     response_description="The Requester's IP Address."
 )
 async def ip(request: Request):
-    return to_request_info(request)
+    return await to_request_info(request)
 
 
 @router.get(
