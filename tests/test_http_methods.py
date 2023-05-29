@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Tag: HTTP Methods
+"""
 from fastapi.testclient import TestClient
 
 from httpbinx import app
