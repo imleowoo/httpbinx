@@ -159,7 +159,7 @@ async def link_page(
             body += f'{i} '
         else:
             body += link.format(
-                href=f'/api/links/{n}/{i}',  # TODO how to use router.url_path_for?
+                href=f'/links/{n}/{i}',  # TODO how to use router.url_path_for?
                 text=i
             )
     return HTMLResponse(content=html.format(body=body))

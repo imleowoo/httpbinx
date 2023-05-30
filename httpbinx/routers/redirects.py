@@ -91,10 +91,10 @@ async def relative_redirect_n_times(
 ):
     resp = Response(status_code=status.HTTP_302_FOUND)
     if n == 1:
-        resp.headers['Location'] = request.url_for('get')
+        resp.headers['Location'] = str(request.url_for('get'))
         return resp
     redirect_name = relative_redirect_n_times.__name__
-    resp.headers['Location'] = request.url_for(redirect_name, n=n - 1)
+    resp.headers['Location'] = str(request.url_for(redirect_name, n=n - 1))
     return resp
 
 

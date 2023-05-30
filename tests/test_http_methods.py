@@ -2,7 +2,10 @@
 """
 Tag: HTTP Methods
 """
+from datetime import datetime
+
 from fastapi.testclient import TestClient
+from starlette import status
 
 from httpbinx import app
 
@@ -11,13 +14,11 @@ client = TestClient(app)
 
 def test_get():
     response = client.get('/get')
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.json()['origin'] == 'testclient'
 
 
 def test_post():
-    from datetime import datetime
-
     data = {
         'name': 'Albert Einstein',
         'age': str(datetime.now().year - 1879)
