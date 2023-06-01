@@ -1,6 +1,10 @@
 ![![cover](httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/httpbinx/static/images/httpbinx_cover.png)
 
+[![thanks](https://img.shields.io/badge/thanks-httpbin-green)](https://github.com/postmanlabs/httpbin)
+![python](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
+
 # httpbinx
+
 HTTP Request & Response Service, written in Python + FastAPI.
 
 ## Reference project
