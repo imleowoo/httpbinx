@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
+from httpbinx.meta import tags_metadata
 from httpbinx.routers import router
 
 app = FastAPI(
@@ -13,6 +14,7 @@ app = FastAPI(
                 'written in Python + FastAPI.',
     docs_url='/',  # swagger docs page url
     swagger_ui_parameters={'docExpansion': 'none'},
+    openapi_tags=tags_metadata
 )
 
 app.mount(
