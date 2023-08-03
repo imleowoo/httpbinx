@@ -2,8 +2,8 @@
 from os import path
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
-from starlette.staticfiles import StaticFiles
 
 from httpbinx.meta import tags_metadata
 from httpbinx.routers import router
