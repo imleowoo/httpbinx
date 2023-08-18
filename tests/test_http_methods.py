@@ -3,6 +3,7 @@
 Tag: HTTP Methods
 """
 from datetime import datetime
+import json
 
 from fastapi.testclient import TestClient
 from starlette import status
@@ -35,4 +36,4 @@ def test_post():
 
     # application/json
     response = client.post('/post', json=data.copy())
-    assert response.json()['json'] == data
+    assert response.json()['json'] == json.dumps(data)
