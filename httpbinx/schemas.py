@@ -2,6 +2,8 @@
 from enum import Enum
 from functools import lru_cache
 import json
+from typing import AnyStr
+from typing import Dict
 from typing import Union
 
 from pydantic import AnyHttpUrl
@@ -35,17 +37,15 @@ class RequestInfo(BaseModel):
     """
 
     url: AnyHttpUrl = Field(title='Request URL')
-    args: dict = Field(default_factory=dict, title='Request Args')
-    headers: dict = Field(default_factory=dict, title='Request Headers')
-    origin: str = Field('', title="Client's IP")
-    form: dict = Field(default_factory=dict, title='Request Form')
-    data: Union[str, bytes] = Field('', title='Request Data')
-    files: dict = Field(default_factory=dict, title='Upload Files')
-    json_data: Union[dict, list, str] = Field(
-        None, alias='json', title='Content-Type: application/json'
-    )
+    args: Dict = Field(default_factory=dict, title='Request Args')
+    headers: Dict = Field(default_factory=dict, title='Request Headers')
+    origin: AnyStr = Field('', title="Client's IP")
+    form: Dict = Field(default_factory=dict, title='Request Form')
+    data: Union[str, bytes] = Field(b'', title='Request Data')
+    files: Dict = Field(default_factory=dict, title='Upload Files')
+    json_data: AnyStr = Field('', alias='json', title='Content-Type: application/json', description='serialized')
     method: HTTPMethod = Field(HTTPMethod.get, title='HTTP Request Method')
-    extras: dict = Field(default_factory=dict, title='The Other Information')
+    extras: Dict = Field(default_factory=dict, title='The Other Information')
 
     @classmethod
     def get_properties(cls):
@@ -143,6 +143,6 @@ class RequestAttrs:
             data=await self.data,
             form=await self.form,
             files=await self.files,
-            json=await self.json,
+            json=json.dumps(await self.json),
             method=self.method,
         )
