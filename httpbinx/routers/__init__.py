@@ -3,7 +3,8 @@
 __all__ = ['router']
 
 from fastapi import APIRouter
-from starlette.responses import FileResponse
+from starlette import status
+from starlette.responses import RedirectResponse
 
 from httpbinx.routers import anything
 from httpbinx.routers import auth
@@ -26,7 +27,10 @@ common_router = APIRouter()
     include_in_schema=False
 )
 async def favicon():
-    return FileResponse('static/favicon.png')
+    return RedirectResponse(
+        url='/static/favicon.png',
+        status_code=status.HTTP_301_MOVED_PERMANENTLY
+    )
 
 
 router = APIRouter()
