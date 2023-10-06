@@ -18,10 +18,10 @@ from httpbinx.routers import statuscodes
 from httpbinx.routers.inspection import request_inspection
 from httpbinx.routers.inspection import response_inspection
 
-common_router = APIRouter()
+router = APIRouter()
 
 
-@common_router.get(
+@router.get(
     '/favicon.ico',
     summary='Returns a favicon.ico.',
     include_in_schema=False
@@ -33,8 +33,6 @@ async def favicon():
     )
 
 
-router = APIRouter()
-router.include_router(common_router)
 router.include_router(httpmethods.router)
 router.include_router(request_inspection.router)
 router.include_router(response_inspection.router, include_in_schema=False)
