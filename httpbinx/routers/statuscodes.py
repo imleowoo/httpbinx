@@ -7,12 +7,12 @@ from starlette.responses import Response
 from httpbinx.helpers import status_code_response
 from httpbinx.helpers import weighted_choice
 
-router = APIRouter(tags=['Status Codes'])
+router = APIRouter(tags=['Status codes'])
 
 
 @router.api_route(
     '/status/{codes}',
-    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
+    methods=['GET'],
     summary='Return status code or random status code '
             'if more than one are given',
     response_description='Response corresponding to different HTTP status codes.'
@@ -22,7 +22,10 @@ async def status_code(
         codes: str = Path(
             ...,
             description='a status code or status codes with weight',
-            example='200:3,400:1'
+            # examples=['200:3,400:1'],
+            openapi_examples={
+                'sample': {'value': '200:3,400:1'}
+            }
         ),
 ) -> Response:
     invalid_status_code_desc = 'Invalid status code'

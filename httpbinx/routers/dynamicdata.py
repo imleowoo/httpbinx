@@ -39,7 +39,12 @@ async def decode_base64(
         value: str = Path(
             ...,
             title='base64-encoded string',
-            example=AWESOME_BASE64ENCODED
+            # examples=[AWESOME_BASE64ENCODED],
+            openapi_examples={
+                'awesome': {
+                    'summary': 'A awesome base64 string',
+                    'value': AWESOME_BASE64ENCODED
+                }}
         )
 ):
     encoded: bytes = value.encode('utf-8')
