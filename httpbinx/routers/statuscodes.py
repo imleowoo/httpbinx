@@ -12,7 +12,7 @@ router = APIRouter(tags=['Status codes'])
 
 @router.api_route(
     '/status/{codes}',
-    methods=['GET'],
+    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
     summary='Return status code or random status code '
             'if more than one are given',
     response_description='Response corresponding to different HTTP status codes.'
