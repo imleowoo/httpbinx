@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
+import json
 from enum import Enum
 from functools import lru_cache
-import json
-from typing import AnyStr
-from typing import Dict
-from typing import Union
+from typing import AnyStr, Dict, Union
 
-from pydantic import AnyHttpUrl
-from pydantic import BaseModel
-from pydantic import Field
+from pydantic import AnyHttpUrl, BaseModel, Field
 from starlette.requests import Request
 
 
@@ -103,7 +99,10 @@ class RequestAttrs:
     @property
     def client_host(self) -> str:
         """request client host."""
-        return self.request.client.host
+        client = self.request.client
+        if client is None:
+            return ''
+        return client.host
 
     @property
     async def data(self):
