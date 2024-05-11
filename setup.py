@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import find_packages, setup
 
 version = (Path(__file__).parent / 'httpbinx' / 'VERSION').read_text('ascii').strip()
 
@@ -47,11 +46,11 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     packages=find_packages(
         include=['httpbinx'],
@@ -59,7 +58,7 @@ setup(
     include_package_data=True,
     install_requires=install_requires,
     tests_require=test_require,
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     project_urls={
         'Source': 'https://github.com/imleowoo/httpbinx',
     },
