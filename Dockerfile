@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:slim
 
 LABEL name="httpbinx"
 LABEL description="HTTP Request & Response Service, written in Python + FastAPI"
