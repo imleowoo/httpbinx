@@ -7,9 +7,7 @@ version = (Path(__file__).parent / 'httpbinx' / 'VERSION').read_text('ascii').st
 
 install_requires = [
     'fastapi',
-    'pydantic',
     'uvicorn',
-    'starlette',
     'jinja2',
     'brotli',
     'python-multipart'
