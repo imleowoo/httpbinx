@@ -8,6 +8,14 @@ dynamic = ["version"]
 description = "HTTP Request & Response Service, written in Python + FastAPI."
 readme = "README.md"
 requires-python = ">=3.8"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "starlette",
+    "jinja2",
+    "brotli",
+    "python-multipart"
+]
 
 # Author information
 authors = [{ name = "Leo", email = "imleowoo@outlook.com" }]
@@ -26,15 +34,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
-]
-
-dependencies = [
-    "fastapi",
-    "uvicorn",
-    "starlette",
-    "jinja2",
-    "brotli",
-    "python-multipart"
 ]
 
 [project.urls]
