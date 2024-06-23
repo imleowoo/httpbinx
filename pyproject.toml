@@ -1,0 +1,56 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+name = "httpbinx"
+dynamic = ["version"]
+description = "HTTP Request & Response Service, written in Python + FastAPI."
+readme = "README.md"
+requires-python = ">=3.8"
+
+# Author information
+authors = [{ name = "Leo", email = "imleowoo@outlook.com" }]
+maintainers = [{ name = "Leo", email = "imleowoo@outlook.com" }]
+
+# License
+license = { file = "LICENSE" }
+
+# Classifiers
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+]
+
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "starlette",
+    "jinja2",
+    "brotli",
+    "python-multipart"
+]
+
+[project.urls]
+Homepage = "https://github.com/imleowoo/httpbinx"
+# Documentation = ""
+Repository = "https://github.com/imleowoo/httpbinx"
+
+[project.optional-dependencies]
+test = [
+    "httpx",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pytest",
+]
+
+[tool.pdm]
+version = { source = "file", path = "httpbinx/__init__.py" }
+distribution = true

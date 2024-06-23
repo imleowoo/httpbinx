@@ -3,8 +3,8 @@ FROM python:slim
 LABEL name="httpbinx"
 LABEL description="HTTP Request & Response Service, written in Python + FastAPI"
 
-COPY . /httpbinx
 WORKDIR /httpbinx
+COPY . .
 RUN python -m pip install .
 RUN rm -rf /httpbinx
 EXPOSE 80
