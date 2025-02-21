@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-yaml
       - id: check-toml
@@ -11,15 +11,15 @@ repos:
       - id: check-docstring-first
       - id: double-quote-string-fixer
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.0
+    rev: 7.1.2
     hooks:
       - id: flake8
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.27.0
+    rev: v4.2.2
     hooks:
       - id: commitizen
         stages: [ commit-msg ]
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort

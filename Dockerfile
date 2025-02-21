@@ -1,7 +1,7 @@
 FROM python:slim
 
-LABEL name="httpbinx"
-LABEL description="HTTP Request & Response Service, written in Python + FastAPI"
+LABEL name="httpbinx" \
+      description="HTTP Request & Response Service, written in Python + FastAPI"
 
 WORKDIR /httpbinx
 COPY . .
