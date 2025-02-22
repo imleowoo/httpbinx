@@ -2,12 +2,16 @@
 
 import argparse
 
+import httpbinx
+
 
 def version(args):
-    print('哈哈哈哈')
+    # TODO
+    print(httpbinx.__version__)
 
 
 def info(args):
+    # TODO
     pass
 
 
