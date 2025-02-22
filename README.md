@@ -35,7 +35,7 @@ $ python setup.py install # or `pip install .`
 ### Run directly
 
 ```shell
-$ uvicorn httpbinx:app --host=0.0.0.0 --port=80
+$ httpbinx server --host=0.0.0.0 --port=80
 ```
 
 ### Run with Docker
