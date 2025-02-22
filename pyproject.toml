@@ -36,6 +36,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 
+[project.scripts]
+httpbinx = "httpbinx.cli:execute"
+
 [project.urls]
 Homepage = "https://github.com/imleowoo/httpbinx"
 # Documentation = ""
