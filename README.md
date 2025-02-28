@@ -1,13 +1,17 @@
 ![![cover](httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/httpbinx/static/images/httpbinx_cover.png)
 
 [![thanks](https://img.shields.io/badge/thanks-httpbin-green)](https://github.com/postmanlabs/httpbin)
-![python](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
+![python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 
 # httpbinx
 
 HTTP Request & Response Service, written in Python + FastAPI.
 
-## Reference project
+## Deployed at:
+
+- **https://httpbinx.wooe.cc**
+
+## Reference Project
 
 A  [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.com/postmanlabs/httpbin
 
