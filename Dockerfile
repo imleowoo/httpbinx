@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:alpine
 
 LABEL name="httpbinx" \
       description="HTTP Request & Response Service, written in Python + FastAPI"
