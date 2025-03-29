@@ -1,9 +1,9 @@
-from os import path
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from httpbinx.meta import tags_metadata
+from httpbinx.meta import get_tags_metadata
 from httpbinx.routers import router
 
 app = FastAPI(
@@ -12,14 +12,15 @@ app = FastAPI(
                 'written in Python + FastAPI.',
     docs_url='/',  # swagger docs page url
     swagger_ui_parameters={'docExpansion': 'none'},
-    openapi_tags=tags_metadata
+    openapi_tags=get_tags_metadata()
 )
 
+# mount static files
+static_dir = Path(__file__).parent / 'static'
 app.mount(
     '/static',
-    StaticFiles(directory=path.join(path.dirname(__file__), 'static')),
+    StaticFiles(directory=static_dir),
     name='static'
 )
 
-# app.openapi_tags = []
 app.include_router(router=router)
