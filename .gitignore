@@ -132,3 +132,9 @@ dmypy.json
 .idea/
 temp/
 .DS_Store
+
+# Visual Studio Code
+.vscode/
+
+# uv
+uv.lock
