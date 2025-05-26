@@ -1,21 +1,20 @@
-# -*- coding: utf-8 -*-
 """Images"""
-from os import path
+from pathlib import Path
 
 from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import FileResponse
 from starlette.status import HTTP_406_NOT_ACCEPTABLE
 
-from httpbinx.helpers import status_code_response
+from httpbinx.helpers import get_images_path, status_code_response
 
 
 class ImageResponse(FileResponse):
     """set response headers Content-Type: image/* """
-    media_type = 'image/*'
+    media_type = 'image/*'  # default
 
 
-images_path = path.join('static', 'images')
+images_path: Path = get_images_path()
 
 router = APIRouter(
     tags=['Images'],
@@ -32,9 +31,6 @@ router = APIRouter(
 )
 async def image(request: Request):
     accept = request.headers.get('accept')
-    if not accept:
-        # Default media type to png
-        return await image_png()
     accept = accept.lower()
     if 'image/webp' in accept:
         return await image_webp()
@@ -42,7 +38,8 @@ async def image(request: Request):
         return await image_svg()
     elif 'image/jpeg' in accept:
         return await image_jpeg()
-    elif 'image/png' in accept or 'image/*' in accept:
+    elif any(x in accept for x in ['image/png', 'image/*', '*/*']):
+        # Default media type to png
         return await image_png()
     else:
         return status_code_response(HTTP_406_NOT_ACCEPTABLE)
@@ -55,7 +52,7 @@ async def image(request: Request):
     response_description='A PNG image.'
 )
 async def image_png():
-    return ImageResponse(path=path.join(images_path, 'pig_icon.png'))
+    return ImageResponse(path=images_path / 'pig_icon.png')
 
 
 @router.get(
@@ -65,7 +62,7 @@ async def image_png():
     response_description='A JPEG image.'
 )
 async def image_jpeg():
-    return ImageResponse(path=path.join(images_path, 'jackal.jpg'))
+    return ImageResponse(path=images_path / 'jackal.jpg')
 
 
 @router.get(
@@ -75,7 +72,7 @@ async def image_jpeg():
     response_description='A WEBP image.'
 )
 async def image_webp():
-    return ImageResponse(path=path.join(images_path, 'wolf_1.webp'))
+    return ImageResponse(path=images_path / 'wolf_1.webp')
 
 
 @router.get(
@@ -85,4 +82,4 @@ async def image_webp():
     response_description='An SVG image.'
 )
 async def image_svg():
-    return ImageResponse(path=path.join(images_path, 'svg_logo.svg'))
+    return ImageResponse(path=images_path / 'svg_logo.svg')
