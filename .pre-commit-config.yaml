@@ -15,11 +15,7 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/commitizen-tools/commitizen
-<<<<<<< HEAD
-    rev: v4.7.0
-=======
     rev: v4.8.2
->>>>>>> f6c9b00 (fix: Fix the error of not finding the images file. (#61))
     hooks:
       - id: commitizen
         stages: [ commit-msg ]
