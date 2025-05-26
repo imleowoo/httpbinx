@@ -133,7 +133,11 @@ dmypy.json
 temp/
 .DS_Store
 
+<<<<<<< HEAD
 # Visual Studio Code
+=======
+# VS Code configuration file
+>>>>>>> f6c9b00 (fix: Fix the error of not finding the images file. (#61))
 .vscode/
 
 # uv
