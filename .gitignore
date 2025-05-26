@@ -132,3 +132,9 @@ dmypy.json
 .idea/
 temp/
 .DS_Store
+
+# VS Code configuration file
+.vscode/
+
+# uv
+uv.lock

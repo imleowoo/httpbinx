@@ -1,26 +1,33 @@
-# -*- coding: utf-8 -*-
 import json
 import random
 import re
+from pathlib import Path
 
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.templating import Jinja2Templates
 
-from httpbinx.constants import ACCEPTED_MEDIA_TYPES
-from httpbinx.constants import ASCII_ART
-from httpbinx.constants import REDIRECT_LOCATION
-from httpbinx.schemas import RequestAttrs
-from httpbinx.schemas import RequestInfo
+from httpbinx.constants import (ACCEPTED_MEDIA_TYPES, ASCII_ART,
+                                REDIRECT_LOCATION)
+from httpbinx.schemas import RequestAttrs, RequestInfo
 
 # init Jinja2
 _templates = Jinja2Templates(directory='templates')
+# image path
+_images_path = Path(__file__).parent / 'static' / 'images'
 
 
 def get_templates() -> Jinja2Templates:
     """Dependency function that creates and returns a Jinja2 templates instance"""
     return _templates
+
+
+def get_images_path() -> Path:
+    """Dependency function that returns the path to the images directory"""
+    if not _images_path.exists():
+        raise FileNotFoundError(f'{_images_path} does not exist.')
+    return _images_path
 
 
 async def to_request_info(request: Request, **extras) -> RequestInfo:
