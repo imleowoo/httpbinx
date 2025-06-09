@@ -5,20 +5,19 @@ from fastapi import APIRouter, Path
 from starlette.requests import Request
 from starlette.responses import FileResponse
 
-from httpbinx.helpers import to_request_info
+from httpbinx.helpers import get_bomb_file_path, to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter(tags=['Anything'])
 
 
 class BombTypes(str, Enum):
-    """The allowed bomb file compression types are: brotli, deflate, and gzip."""
+    """The allowed bomb file compression types are: brotli and gzip."""
     brotli = 'brotli'
-    deflate = 'deflate'
     gzip = 'gzip'
 
 
-bombs_path = path.join('static', 'bombs')
+bombs_path: Path = get_bomb_file_path()
 
 
 @router.api_route(
@@ -33,28 +32,31 @@ async def anything(request: Request):
 
 
 @router.get(
-    '/bombs/{file}'
+    '/bombs/{file}',
+    response_class=FileResponse,
+    summary='Returns a bomb file.',
+    description='**It may cause your client to crash! '
+                'References [I use Zip Bombs to Protect my Server](https://idiallo.com/blog/zipbomb-protection)**',
+    response_description='Return a bomb for compressed files.'
 )
 async def bomb_file(
-    *,
-    file: BombTypes = Path(
-        ...,
-        title='Compression types',
-        description='The allowed bomb file compression types',
-    )
+        *,
+        file: BombTypes = Path(
+            ...,
+            title='Compression types',
+            description='The allowed bomb file compression types',
+        )
 ):
     if file == BombTypes.gzip:
+        # dd if=/dev/zero bs=1M count=1000 | gzip -c > bomb-1GB.gz
         return FileResponse(
             path=path.join(bombs_path, 'bomb-1GB.gz'),
             headers={'Content-Encoding': 'gzip'},
         )
     elif file == BombTypes.brotli:
+        # dd if=/dev/zero bs=1M count=1000 | brotli > bomb-1GB.br
         return FileResponse(
             path=path.join(bombs_path, 'bomb-1GB.br'),
             headers={'Content-Encoding': 'br'},
         )
-    elif file == BombTypes.deflate:
-        return FileResponse(
-            path=path.join(bombs_path, 'bomb-1GB.deflate'),
-            headers={'Content-Encoding': 'deflate'},
-        )
+    raise ValueError(f'{file} is not a valid file type.')

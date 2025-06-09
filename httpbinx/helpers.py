@@ -16,6 +16,8 @@ from httpbinx.schemas import RequestAttrs, RequestInfo
 _templates = Jinja2Templates(directory='templates')
 # image path
 _images_path = Path(__file__).parent / 'static' / 'images'
+# bomb files path
+_bomb_files_path = Path(__file__).parent / 'static' / 'bombs'
 
 
 def get_templates() -> Jinja2Templates:
@@ -28,6 +30,13 @@ def get_images_path() -> Path:
     if not _images_path.exists():
         raise FileNotFoundError(f'{_images_path} does not exist.')
     return _images_path
+
+
+def get_bomb_file_path() -> Path:
+    """Dependency function that returns the path to the bomb files directory"""
+    if not _bomb_files_path.exists():
+        raise FileNotFoundError(f'{_bomb_files_path} does not exist.')
+    return _bomb_files_path
 
 
 async def to_request_info(request: Request, **extras) -> RequestInfo:
