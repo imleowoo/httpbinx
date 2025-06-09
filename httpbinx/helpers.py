@@ -32,14 +32,13 @@ def get_images_path() -> Path:
     return _images_path
 
 
-
 def get_bomb_file_path() -> Path:
     """Dependency function that returns the path to the bomb files directory"""
     if not _bomb_files_path.exists():
         raise FileNotFoundError(f'{_bomb_files_path} does not exist.')
     return _bomb_files_path
-  
-  
+
+
 async def to_request_info(request: Request, **extras) -> RequestInfo:
     """Returns model RequestInfo instance"""
     await request.body()  # Note: Execute `.stream()` only once.
