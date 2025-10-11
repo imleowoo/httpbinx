@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Auth"""
-from fastapi import APIRouter
-from fastapi import HTTPException
-from fastapi.security import HTTPBasic
-from fastapi.security import HTTPBasicCredentials
+from fastapi import APIRouter, HTTPException
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 router = APIRouter(tags=['Auth'],)
 security = HTTPBasic()

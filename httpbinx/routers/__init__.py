@@ -6,17 +6,10 @@ from fastapi import APIRouter
 from starlette import status
 from starlette.responses import RedirectResponse
 
-from httpbinx.routers import anything
-from httpbinx.routers import auth
-from httpbinx.routers import cookies
-from httpbinx.routers import dynamicdata
-from httpbinx.routers import httpmethods
-from httpbinx.routers import images
-from httpbinx.routers import redirects
-from httpbinx.routers import responseformats
-from httpbinx.routers import statuscodes
-from httpbinx.routers.inspection import request_inspection
-from httpbinx.routers.inspection import response_inspection
+from httpbinx.routers import (anything, auth, cookies, dynamicdata,
+                              httpmethods, images, redirects, responseformats,
+                              statuscodes)
+from httpbinx.routers.inspection import request_inspection, response_inspection
 
 router = APIRouter()
 

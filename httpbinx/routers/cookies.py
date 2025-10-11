@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 """Cookies"""
-from fastapi import APIRouter
-from fastapi import Path
-from fastapi import Query
+from fastapi import APIRouter, Path, Query
 from starlette.requests import Request
-from starlette.responses import JSONResponse
-from starlette.responses import RedirectResponse
+from starlette.responses import JSONResponse, RedirectResponse
 
 from httpbinx.constants import ENV_COOKIES
 

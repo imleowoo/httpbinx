@@ -2,9 +2,9 @@
 """
 Tag: Dynamic Data
 """
-from base64 import b64encode
 import time
 import uuid
+from base64 import b64encode
 
 from fastapi.testclient import TestClient
 from starlette import status
@@ -40,7 +40,7 @@ def test_bytes():
     # Retrieve large bytes.
     n = 2 ** 10 * 1000
     response = client.get(f'/bytes/{n}')
-    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
 
 def test_delay():

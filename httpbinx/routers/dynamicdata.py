@@ -6,16 +6,12 @@ import binascii
 import random
 import uuid
 
-from fastapi import APIRouter
-from fastapi import Path
-from fastapi import Query
+from fastapi import APIRouter, Path, Query
 from fastapi.responses import PlainTextResponse
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import HTMLResponse
-from starlette.responses import JSONResponse
-from starlette.responses import Response
-from starlette.responses import StreamingResponse
+from starlette.responses import (HTMLResponse, JSONResponse, Response,
+                                 StreamingResponse)
 
 from httpbinx.constants import AWESOME_BASE64ENCODED
 from httpbinx.helpers import to_request_info

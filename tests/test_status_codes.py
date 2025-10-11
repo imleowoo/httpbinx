@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tag: Status Codes
 """
@@ -14,7 +13,7 @@ client = TestClient(app)
 
 def test_status_codes():
     # All HTTP Codes
-    for name in [c for c in dir(status) if c.startswith('HTTP')]:
+    for name in [c for c in dir(status) if c.startswith('HTTP') and c not in status.__deprecated__]:
         target_code = getattr(status, name)
         for method in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']:
             response = client.request(method=method, url=f'/status/{target_code}')
