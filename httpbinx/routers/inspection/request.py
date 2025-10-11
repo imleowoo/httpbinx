@@ -4,8 +4,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from httpbinx.helpers import to_request_info
-from httpbinx.schemas import RequestAttrs
-from httpbinx.schemas import RequestInfo
+from httpbinx.schemas import RequestAttrs, RequestInfo
 
 router = APIRouter(tags=['Request inspection'])
 

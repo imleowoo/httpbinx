@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
 from enum import Enum
 
-from fastapi import APIRouter
-from fastapi import Path
-from fastapi import Query
+from fastapi import APIRouter, Path, Query
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
-from starlette.responses import Response
+from starlette.responses import RedirectResponse, Response
 
 router = APIRouter(tags=['Redirects'])
 

@@ -1,24 +1,18 @@
-# -*- coding: utf-8 -*-
 """Response Formats"""
 import gzip
 import zlib
 
 import brotli
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import HTMLResponse
-from fastapi.responses import PlainTextResponse
-from fastapi.responses import Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.templating import Jinja2Templates
 
-from httpbinx.constants import ANGRY_ASCII
-from httpbinx.constants import ROBOT_TXT
-from httpbinx.helpers import get_templates
-from httpbinx.helpers import to_request_info
+from httpbinx.constants import ANGRY_ASCII, ROBOT_TXT
+from httpbinx.helpers import get_templates, to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter(tags=['Response formats'])

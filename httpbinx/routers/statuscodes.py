@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
-from fastapi import APIRouter
-from fastapi import Path
-from starlette.responses import PlainTextResponse
-from starlette.responses import Response
+from fastapi import APIRouter, Path
+from starlette.responses import PlainTextResponse, Response
 
-from httpbinx.helpers import status_code_response
-from httpbinx.helpers import weighted_choice
+from httpbinx.helpers import status_code_response, weighted_choice
 
 router = APIRouter(tags=['Status codes'])
 

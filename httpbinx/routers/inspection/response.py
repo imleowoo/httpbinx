@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-from email.utils import formatdate
 import uuid
+from email.utils import formatdate
 
-from fastapi import APIRouter
-from fastapi import Path
+from fastapi import APIRouter, Path
 from starlette import status
 from starlette.requests import Request
 
-from httpbinx.helpers import parse_multi_value_header
-from httpbinx.helpers import status_code_response
+from httpbinx.helpers import parse_multi_value_header, status_code_response
 from httpbinx.routers import httpmethods
 
 router = APIRouter(tags=['Response inspection'],)
