@@ -9,7 +9,7 @@ from starlette.requests import Request
 from httpbinx.helpers import parse_multi_value_header, status_code_response
 from httpbinx.routers import httpmethods
 
-router = APIRouter(tags=['Response inspection'],)
+router = APIRouter(tags=['Response inspection'], )
 
 
 @router.get(
@@ -20,8 +20,7 @@ router = APIRouter(tags=['Response inspection'],)
 )
 async def cache(request: Request):
     # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Modified-Since
-    is_conditional = request.headers.get('If-Modified-Since') or \
-                     request.headers.get('If-None-Match')
+    is_conditional = request.headers.get('If-Modified-Since') or request.headers.get('If-None-Match')
     if is_conditional is None:
         response = await httpmethods.get(request)
         response.headers['Last-Modified'] = formatdate()
