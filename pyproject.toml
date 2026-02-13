@@ -7,7 +7,7 @@ name = "httpbinx"
 dynamic = ["version"]
 description = "HTTP Request & Response Service, written in Python + FastAPI."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "fastapi",
     "uvicorn",
