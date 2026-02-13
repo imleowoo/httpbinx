@@ -18,12 +18,13 @@ repos:
       - id: flake8
         additional_dependencies:
           - flake8-docstrings
+          - flake8-bugbear
   - repo: https://github.com/pycqa/isort
     rev: 7.0.0
     hooks:
       - id: isort
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.12.1
+    rev: v4.13.7
     hooks:
       - id: commitizen
         stages: [commit-msg]
