@@ -1,31 +1,40 @@
-"""httpbinx"""
+"""httpbinx CLI."""
 
 import argparse
+import platform
+import sys
+
+import fastapi
 
 import httpbinx
 
 
-def version(args):
-    # TODO
+def info(_args):
+    """Show httpbinx and environment information."""
+    print(f"httpbinx: {httpbinx.__version__}")
+    print(f"fastapi: {fastapi.__version__}")
+    print(f"python: {sys.version}")
+    print(f"platform: {platform.platform()}")
+    print(f"python executable: {sys.executable}")
+
+
+def version(_args):
+    """Show httpbinx version."""
     print(httpbinx.__version__)
 
 
-def info(args):
-    # TODO
-    pass
-
-
-def server(args):
-    """Start the httpbinx server"""
+def server(_args):
+    """Start the httpbinx server."""
     import uvicorn
     uvicorn.run(
         'httpbinx.main:app',
-        host=args.host,
-        port=args.port
+        host=_args.host,
+        port=_args.port
     )
 
 
 def execute():
+    """Execute the CLI."""
     parser = argparse.ArgumentParser(
         prog='httpbinx',
         description='httpbinx is a fastapi server for testing.'
