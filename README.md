@@ -13,7 +13,7 @@ HTTP Request & Response Service, written in Python + FastAPI.
 
 ## Reference Project
 
-A  [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.com/postmanlabs/httpbin
+A [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.com/postmanlabs/httpbin
 
 ## Quick Start
 
