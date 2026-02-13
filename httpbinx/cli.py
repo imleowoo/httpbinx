@@ -4,15 +4,23 @@ import argparse
 import platform
 import sys
 
+import fastapi
+
 import httpbinx
 
 
 def info(_args):
     """Show httpbinx and environment information."""
     print(f"httpbinx: {httpbinx.__version__}")
+    print(f"fastapi: {fastapi.__version__}")
     print(f"python: {sys.version}")
     print(f"platform: {platform.platform()}")
     print(f"python executable: {sys.executable}")
+
+
+def version(_args):
+    """Show httpbinx version."""
+    print(httpbinx.__version__)
 
 
 def server(_args):
@@ -33,6 +41,9 @@ def execute():
     )
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     subparsers = parser.add_subparsers(dest='command')
+    # version
+    parser_version = subparsers.add_parser('version', help='show version')
+    parser_version.set_defaults(func=version)
     # info
     parser_info = subparsers.add_parser('info', help='show info')
     parser_info.set_defaults(func=info)
