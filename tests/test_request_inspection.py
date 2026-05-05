@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 Tag: Request Inspection
 """
+
 from fastapi.testclient import TestClient
 from starlette import status
 
@@ -33,7 +33,7 @@ def test_user_agent():
         'Opera/9.60 (Windows NT 6.0; U; en) Presto/2.1.1',
         'Mozilla/5.0 (compatible; Googlebot/2.1; +https://www.google.com/bot.html)',
         'curl/7.64.1',
-        'PostmanRuntime/7.26.5'
+        'PostmanRuntime/7.26.5',
     ]
     for ua in ua_examples:
         headers = {'User-Agent': ua}

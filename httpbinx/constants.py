@@ -1,12 +1,6 @@
 REDIRECT_LOCATION = '/redirect/1'
 
-ACCEPTED_MEDIA_TYPES = [
-    'image/webp',
-    'image/svg+xml',
-    'image/jpeg',
-    'image/png',
-    'image/*'
-]
+ACCEPTED_MEDIA_TYPES = ['image/webp', 'image/svg+xml', 'image/jpeg', 'image/png', 'image/*']
 
 ENV_COOKIES = (
     '_gauges_unique',

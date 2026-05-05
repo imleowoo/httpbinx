@@ -9,6 +9,8 @@ router = APIRouter(tags=['Redirects'])
 
 
 class RedirectTypes(str, Enum):
+    """Supported redirect types."""
+
     DEFAULT = 'redirect'
     ABSOLUTE = 'absolute_redirect'
     RELATIVE = 'relative_redirect'
@@ -20,11 +22,7 @@ class RedirectTypes(str, Enum):
     response_description='A redirection.',
     response_class=RedirectResponse,
 )
-async def absolute_redirect_n_times(
-        *,
-        n: int = Path(..., title='Redirects n times.', gt=0, le=10),
-        request: Request
-):
+async def absolute_redirect_n_times(*, n: int = Path(..., title='Redirects n times.', gt=0, le=10), request: Request):
     if n == 1:
         return RedirectResponse(request.url_for('get'))
     return _redirect(request, type_=RedirectTypes.ABSOLUTE, n=n)
@@ -35,37 +33,29 @@ async def absolute_redirect_n_times(
     methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
     summary='302/3XX Redirects to the given URL.',
     response_description='A redirection.',
-    response_class=Response
+    response_class=Response,
 )
 async def redirect_to(
-        *,
-        url: str = Query(..., title='Redirect to URL'),
-        status_code: int = Query(
-            status.HTTP_302_FOUND,
-            title='status code',
-            ge=status.HTTP_300_MULTIPLE_CHOICES,
-            lt=status.HTTP_400_BAD_REQUEST,
-        ),
+    *,
+    url: str = Query(..., title='Redirect to URL'),
+    status_code: int = Query(
+        status.HTTP_302_FOUND,
+        title='status code',
+        ge=status.HTTP_300_MULTIPLE_CHOICES,
+        lt=status.HTTP_400_BAD_REQUEST,
+    ),
 ):
     resp = Response(status_code=status_code)
     resp.headers['Location'] = url
     return resp
 
 
-@router.get(
-    '/redirect/{n}',
-    summary='302 Redirects n times.',
-    response_description='A redirection.'
-)
+@router.get('/redirect/{n}', summary='302 Redirects n times.', response_description='A redirection.')
 async def redirect_n_times(
-        *,
-        n: int = Path(..., title='Redirects n times.', gt=0, le=10),
-        is_absolute: bool = Query(
-            False,
-            alias='absolute',
-            title='is an absolute redirection？'
-        ),
-        request: Request
+    *,
+    n: int = Path(..., title='Redirects n times.', gt=0, le=10),
+    is_absolute: bool = Query(False, alias='absolute', title='is an absolute redirection？'),
+    request: Request,
 ):
     if n == 1:
         return RedirectResponse(request.url_for('get'))
@@ -76,15 +66,9 @@ async def redirect_n_times(
 
 
 @router.get(
-    '/relative-redirect/{n}',
-    summary='Relatively 302 Redirects n times.',
-    response_description='A redirection.'
+    '/relative-redirect/{n}', summary='Relatively 302 Redirects n times.', response_description='A redirection.'
 )
-async def relative_redirect_n_times(
-        *,
-        n: int = Path(..., title='Redirects n times.', gt=0, le=10),
-        request: Request
-):
+async def relative_redirect_n_times(*, n: int = Path(..., title='Redirects n times.', gt=0, le=10), request: Request):
     resp = Response(status_code=status.HTTP_302_FOUND)
     if n == 1:
         resp.headers['Location'] = str(request.url_for('get'))

@@ -8,8 +8,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.templating import Jinja2Templates
 
-from httpbinx.constants import (ACCEPTED_MEDIA_TYPES, ASCII_ART,
-                                REDIRECT_LOCATION)
+from httpbinx.constants import ACCEPTED_MEDIA_TYPES, ASCII_ART, REDIRECT_LOCATION
 from httpbinx.schemas import RequestAttrs, RequestInfo
 
 # init Jinja2
@@ -62,25 +61,19 @@ def status_code_response(code: int) -> Response:
         status.HTTP_304_NOT_MODIFIED: dict(data=''),
         status.HTTP_305_USE_PROXY: redirect,
         status.HTTP_307_TEMPORARY_REDIRECT: redirect,
-        status.HTTP_401_UNAUTHORIZED: dict(
-            headers={'WWW-Authenticate': 'Basic realm="Fake Realm"'}
-        ),
+        status.HTTP_401_UNAUTHORIZED: dict(headers={'WWW-Authenticate': 'Basic realm="Fake Realm"'}),
         status.HTTP_402_PAYMENT_REQUIRED: dict(
-            data='Fuck you, pay me!',
-            headers={'x-more-info': 'https://vimeo.com/22053820'}
+            data='Fuck you, pay me!', headers={'x-more-info': 'https://vimeo.com/22053820'}
         ),
         status.HTTP_406_NOT_ACCEPTABLE: dict(
-            data=json.dumps({
-                'message': 'Client did not request a supported media type.',
-                'accept': ACCEPTED_MEDIA_TYPES
-            }),
-            headers={'Content-Type': 'application/json'}),
-        status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(
-            headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}
+            data=json.dumps(
+                {'message': 'Client did not request a supported media type.', 'accept': ACCEPTED_MEDIA_TYPES}
+            ),
+            headers={'Content-Type': 'application/json'},
         ),
+        status.HTTP_407_PROXY_AUTHENTICATION_REQUIRED: dict(headers={'Proxy-Authenticate': 'Basic realm="Fake Realm"'}),
         status.HTTP_418_IM_A_TEAPOT: dict(  # I'm a teapot!
-            data=ASCII_ART,
-            headers={'x-more-info': 'https://datatracker.ietf.org/doc/html/rfc2324'}
+            data=ASCII_ART, headers={'x-more-info': 'https://datatracker.ietf.org/doc/html/rfc2324'}
         ),
     }
 

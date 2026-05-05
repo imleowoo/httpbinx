@@ -1,4 +1,5 @@
 """Images"""
+
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -10,24 +11,21 @@ from httpbinx.helpers import get_images_path, status_code_response
 
 
 class ImageResponse(FileResponse):
-    """set response headers Content-Type: image/* """
+    """set response headers Content-Type: image/*"""
+
     media_type = 'image/*'  # default
 
 
 images_path: Path = get_images_path()
 
-router = APIRouter(
-    tags=['Images'],
-    default_response_class=ImageResponse
-)
+router = APIRouter(tags=['Images'], default_response_class=ImageResponse)
 
 
 @router.get(
     '/image',
     response_class=ImageResponse,
-    summary='Returns a simple image of the type suggest by to '
-            'Accept header.',
-    response_description='An image.'
+    summary='Returns a simple image of the type suggest by to Accept header.',
+    response_description='An image.',
 )
 async def image(request: Request):
     accept = request.headers.get('accept')
@@ -49,7 +47,7 @@ async def image(request: Request):
     '/image/png',
     response_class=ImageResponse,
     summary='Returns a simple PNG image.',
-    response_description='A PNG image.'
+    response_description='A PNG image.',
 )
 async def image_png():
     return ImageResponse(path=images_path / 'pig_icon.png')
@@ -59,7 +57,7 @@ async def image_png():
     '/image/jpeg',
     response_class=ImageResponse,
     summary='Returns a simple JPEG image.',
-    response_description='A JPEG image.'
+    response_description='A JPEG image.',
 )
 async def image_jpeg():
     return ImageResponse(path=images_path / 'jackal.jpg')
@@ -69,7 +67,7 @@ async def image_jpeg():
     '/image/webp',
     response_class=ImageResponse,
     summary='Returns a simple WEBP image.',
-    response_description='A WEBP image.'
+    response_description='A WEBP image.',
 )
 async def image_webp():
     return ImageResponse(path=images_path / 'wolf_1.webp')
@@ -79,7 +77,7 @@ async def image_webp():
     '/image/svg',
     response_class=ImageResponse,
     summary='Returns a simple SVG image.',
-    response_description='An SVG image.'
+    response_description='An SVG image.',
 )
 async def image_svg():
     return ImageResponse(path=images_path / 'svg_logo.svg')

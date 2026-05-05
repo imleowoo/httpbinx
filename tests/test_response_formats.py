@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 Tag: Response Formats
 """
+
 from fastapi.testclient import TestClient
 from starlette import status
 
@@ -34,13 +34,17 @@ def test_deny():
     assert "YOU SHOULDN'T BE HERE" in response.text
 
 
-def test_encoding_utf8(): pass
+def test_encoding_utf8():
+    pass
 
 
-def test_html(): pass
+def test_html():
+    pass
 
 
-def test_robot(): pass
+def test_robot():
+    pass
 
 
-def test_xml(): pass
+def test_xml():
+    pass

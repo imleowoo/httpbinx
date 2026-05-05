@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 Tag: HTTP Methods
 """
+
 import json
 from datetime import datetime
 
@@ -20,10 +20,7 @@ def test_get():
 
 
 def test_post():
-    data = {
-        'name': 'Albert Einstein',
-        'age': str(datetime.now().year - 1879)
-    }
+    data = {'name': 'Albert Einstein', 'age': str(datetime.now().year - 1879)}
     # string or bytes
     str_or_bytes = b'httpbinx'
     response = client.post('/post', content=str_or_bytes)

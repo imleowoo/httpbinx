@@ -1,6 +1,7 @@
 """
 Tag: Images
 """
+
 from fastapi.testclient import TestClient
 
 from httpbinx import app

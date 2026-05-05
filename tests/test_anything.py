@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 Tag: Anything
 """
+
 from fastapi.testclient import TestClient
 from starlette import status
 

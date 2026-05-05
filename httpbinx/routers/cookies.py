@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Cookies"""
+
 from fastapi import APIRouter, Path, Query
 from starlette.requests import Request
 from starlette.responses import JSONResponse, RedirectResponse
@@ -14,16 +14,11 @@ router = APIRouter(tags=['Cookies'])
     summary='Returns cookie data.',
     response_description='Set cookies.',
     response_class=JSONResponse,
-
 )
 async def cookies(
-        *,
-        show_env: bool = Query(
-            default=False,
-            title='Show Environment variable?',
-            include_in_schema=False
-        ),
-        request: Request
+    *,
+    show_env: bool = Query(default=False, title='Show Environment variable?', include_in_schema=False),
+    request: Request,
 ):
     resp = JSONResponse(content={'cookies': request.cookies})
     if not show_env:
@@ -34,10 +29,9 @@ async def cookies(
 
 @router.get(
     '/cookies/set',
-    summary='Sets cookie(s) as provided by the query string '
-            'and redirects to cookie list.',
+    summary='Sets cookie(s) as provided by the query string and redirects to cookie list.',
     response_description='Redirect to cookie list',
-    response_class=RedirectResponse
+    response_class=RedirectResponse,
 )
 async def set_cookies(request: Request):
     params = request.query_params.items()
@@ -55,10 +49,10 @@ async def set_cookies(request: Request):
     response_class=RedirectResponse,
 )
 async def set_cookie(
-        *,
-        name: str = Path(..., description='Cookie Name'),
-        value: str = Path(..., description='Cookie Value'),
-        request: Request
+    *,
+    name: str = Path(..., description='Cookie Name'),
+    value: str = Path(..., description='Cookie Value'),
+    request: Request,
 ):
     resp = RedirectResponse(request.url_for(cookies.__name__))
     # TODO secure=True
@@ -68,10 +62,9 @@ async def set_cookie(
 
 @router.get(
     '/cookies/delete',
-    summary='Deletes cookie(s) as provided by the query string '
-            'and redirects to cookie list.',
+    summary='Deletes cookie(s) as provided by the query string and redirects to cookie list.',
     response_description='Redirect to cookie list',
-    response_class=RedirectResponse
+    response_class=RedirectResponse,
 )
 async def delete_cookies(request: Request):
     keys = request.query_params.keys()
