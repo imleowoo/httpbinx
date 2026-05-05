@@ -59,7 +59,7 @@ version = { source = "file", path = "httpbinx/__init__.py" }
 distribution = true
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py314"
 line-length = 120
 exclude = ["*_pb2*.py", "*.pb2.py", "anyproto", "commonproto", "taskpool"]
 
