@@ -1,28 +1,44 @@
-"""
-Tag: Anything
-"""
+"""Tag: Anything"""
 
-from fastapi.testclient import TestClient
 from starlette import status
 
-from httpbinx import app
 
-client = TestClient(app)
+class TestAnything:
+    """Tests for the /anything endpoint."""
 
+    def test_all_methods(self, client):
+        for method in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']:
+            response = client.request(method=method, url='/anything')
+            assert response.status_code == status.HTTP_200_OK
+            assert response.json()['method'] == method
 
-def test_anything():
-    for method in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']:
-        response = client.request(method=method, url='/anything')
+    def test_with_body(self, client):
+        response = client.post('/anything', json={'hello': 'world'})
         assert response.status_code == status.HTTP_200_OK
-        assert response.json()['method'] == method
+        data = response.json()
+        assert data['method'] == 'POST'
+        assert '"hello"' in data['json']
+
+    def test_with_query_params(self, client):
+        response = client.get('/anything?foo=bar&baz=1')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['args'] == {'foo': 'bar', 'baz': '1'}
+
+    def test_with_headers(self, client):
+        response = client.get('/anything', headers={'X-Custom': 'test-value'})
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['headers']['x-custom'] == 'test-value'
 
 
-def test_bombs():
-    # brotli
-    br_response = client.get('/bombs/brotli')
-    assert br_response.status_code == status.HTTP_200_OK
-    assert br_response.headers['content-encoding'] == 'br'
-    # gzip
-    gz_response = client.get('/bombs/gzip')
-    assert gz_response.status_code == status.HTTP_200_OK
-    assert gz_response.headers['content-encoding'] == 'gzip'
+class TestBombs:
+    """Tests for the /bombs endpoint."""
+
+    def test_brotli(self, client):
+        response = client.get('/bombs/brotli')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.headers['content-encoding'] == 'br'
+
+    def test_gzip(self, client):
+        response = client.get('/bombs/gzip')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.headers['content-encoding'] == 'gzip'
