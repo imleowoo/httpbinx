@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -25,7 +24,7 @@ async def headers(request: Request):
     response_model=RequestInfo,
     response_model_include={'origin'},
     summary="Returns the requester's IP Address.",
-    response_description="The Requester's IP Address."
+    response_description="The Requester's IP Address.",
 )
 async def ip(request: Request):
     return await to_request_info(request)
@@ -34,10 +33,8 @@ async def ip(request: Request):
 @router.get(
     '/user-agent',
     summary="Return the incoming requests's User-Agent header.",
-    response_description='The request’s User-Agent header.'
+    response_description='The request’s User-Agent header.',
 )
 async def user_agent(request: Request) -> JSONResponse:
     # TODO show_env
-    return JSONResponse(
-        content={'user-agent': RequestAttrs(request).user_agent}
-    )
+    return JSONResponse(content={'user-agent': RequestAttrs(request).user_agent})

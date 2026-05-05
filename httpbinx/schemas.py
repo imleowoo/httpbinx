@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 from enum import Enum
 from functools import lru_cache
@@ -9,11 +8,12 @@ from starlette.requests import Request
 
 
 class HTTPMethod(str, Enum):
-    """ HTTP request methods
+    """HTTP request methods
 
     References:
         - https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
     """
+
     get = 'GET'
     head = 'HEAD'
     post = 'POST'
@@ -55,6 +55,7 @@ class RequestInfo(BaseModel):
 
 
 class RequestAttrs:
+    """Wraps a Starlette Request to expose its attributes as properties."""
 
     def __init__(self, request: Request):
         self._request = request
@@ -84,8 +85,7 @@ class RequestAttrs:
         for k, v in self.request.query_params.multi_items():
             exist = out.get(k)
             if exist:
-                out[k] = exist.append(v) \
-                    if isinstance(exist, list) else [exist, v]
+                out[k] = exist.append(v) if isinstance(exist, list) else [exist, v]
             else:
                 out[k] = v
         return out

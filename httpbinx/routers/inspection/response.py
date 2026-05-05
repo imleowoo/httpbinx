@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import uuid
 from email.utils import formatdate
 
@@ -9,14 +8,16 @@ from starlette.requests import Request
 from httpbinx.helpers import parse_multi_value_header, status_code_response
 from httpbinx.routers import httpmethods
 
-router = APIRouter(tags=['Response inspection'], )
+router = APIRouter(
+    tags=['Response inspection'],
+)
 
 
 @router.get(
     '/cache',
     summary='Returns a 304 if an If-Modified-Since header or If-None-Match'
-            ' is present. Returns the same as a GET otherwise.',
-    response_description='TODO'
+    ' is present. Returns the same as a GET otherwise.',
+    response_description='TODO',
 )
 async def cache(request: Request):
     # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Modified-Since
@@ -31,15 +32,9 @@ async def cache(request: Request):
 
 
 @router.get(
-    '/cache/{value}',
-    summary='Sets a Cache-Control header for n seconds.',
-    response_description='Cache control set'
+    '/cache/{value}', summary='Sets a Cache-Control header for n seconds.', response_description='Cache control set'
 )
-async def cache_control(
-        *,
-        value: int = Path(..., title='Cache-Control max-age value'),
-        request: Request
-):
+async def cache_control(*, value: int = Path(..., title='Cache-Control max-age value'), request: Request):
     response = await httpmethods.get(request)
     response.headers['Cache-Control'] = f'public, max-age={value}'
     return response
@@ -47,19 +42,12 @@ async def cache_control(
 
 @router.get(
     '/etag/{etag}',
-    summary='Assumes the resource has the given etag and responds '
-            'to If-None-Match and If-Match headers appropriately.',
+    summary='Assumes the resource has the given etag and responds to If-None-Match and If-Match headers appropriately.',
 )
-async def set_etag(
-        *,
-        etag: str = Path(..., title='ETag value'),
-        request: Request
-):
+async def set_etag(*, etag: str = Path(..., title='ETag value'), request: Request):
     # TODO set If-None-Match
     # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-None-Match
-    if_none_match = parse_multi_value_header(
-        request.headers.get('If-None-Match')
-    )
+    if_none_match = parse_multi_value_header(request.headers.get('If-None-Match'))
     if_match = parse_multi_value_header(request.headers.get('If-Match'))
 
     if if_none_match:
@@ -79,9 +67,7 @@ async def set_etag(
 @router.api_route(
     '/response-headers',
     summary='Returns a set of response headers from the query string.',
-    response_description='Response headers'
+    response_description='Response headers',
 )
-async def response_headers(
-        request: Request
-):
+async def response_headers(request: Request):
     pass

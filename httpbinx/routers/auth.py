@@ -1,22 +1,20 @@
-# -*- coding: utf-8 -*-
 """Auth"""
+
 from fastapi import APIRouter, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-router = APIRouter(tags=['Auth'],)
+router = APIRouter(
+    tags=['Auth'],
+)
 security = HTTPBasic()
 
 
 @router.get(
     '/basic-auth/{user}/{password}',
     summary='Prompts the user for authorization using HTTP Basic Auth.',
-    response_description='TODO'
+    response_description='TODO',
 )
-async def basic_auth(
-        user: str,
-        password: str,
-        credentials: HTTPBasicCredentials = security
-):
+async def basic_auth(user: str, password: str, credentials: HTTPBasicCredentials = security):
     if not (credentials and credentials.username == user and credentials.password == password):
         raise HTTPException(status_code=401)
 

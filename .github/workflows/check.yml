@@ -22,13 +22,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install flake8 pytest
-          python -m pip install httpx
+          python -m pip install pytest ruff httpx
           pip install .
-      - name: Lint with flake8
+      - name: Lint with ruff
         run: |
-          flake8 . --count --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --statistics
+          ruff check .
       - name: Test with pytest
         run: |
           pytest

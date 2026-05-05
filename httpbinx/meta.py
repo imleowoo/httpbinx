@@ -2,6 +2,7 @@
 This module defines the metadata for API tags used in the FastAPI application.
 These tags are used to organize and categorize different endpoints in the API documentation.
 """
+
 from functools import lru_cache
 from typing import List
 
@@ -9,11 +10,15 @@ from pydantic import BaseModel, Field
 
 
 class Tag(BaseModel):
+    """API tag with name and description."""
+
     name: str = Field(..., description='The name of the tag')
     description: str = Field(..., description='A brief description of the tag')
 
 
 class TagsMetadata(BaseModel):
+    """Container for a list of API tags."""
+
     tags: List[Tag] = Field(..., description='List of API tags')
 
 

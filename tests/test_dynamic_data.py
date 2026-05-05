@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 Tag: Dynamic Data
 """
+
 import time
 import uuid
 from base64 import b64encode
@@ -22,7 +22,7 @@ def test_base64():
 
 
 def test_bytes():
-    n = 2 ** 10
+    n = 2**10
     response = client.get(f'/bytes/{n}')
     size = 0
     for con in response.iter_bytes():
@@ -38,7 +38,7 @@ def test_bytes():
     assert size == n
 
     # Retrieve large bytes.
-    n = 2 ** 10 * 1000
+    n = 2**10 * 1000
     response = client.get(f'/bytes/{n}')
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
@@ -51,16 +51,20 @@ def test_delay():
     assert time.time() - start > delay
 
 
-def test_drip(): pass
+def test_drip():
+    pass
 
 
-def test_links(): pass
+def test_links():
+    pass
 
 
-def test_range(): pass
+def test_range():
+    pass
 
 
-def test_stream_bytes(): pass
+def test_stream_bytes():
+    pass
 
 
 def test_uuid():

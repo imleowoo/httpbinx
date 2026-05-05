@@ -1,4 +1,5 @@
 """Response Formats"""
+
 import gzip
 import zlib
 
@@ -24,7 +25,7 @@ router = APIRouter(tags=['Response formats'])
     response_model=RequestInfo,
     response_class=JSONResponse,
     response_model_include={'origin', 'headers', 'method', 'extras'},
-    response_description='Brotli-encoded data.'
+    response_description='Brotli-encoded data.',
 )
 async def brotli_encoded_content(request: Request):
     info = await to_request_info(request, brotli=True)
@@ -42,7 +43,7 @@ async def brotli_encoded_content(request: Request):
     response_model=RequestInfo,
     response_class=JSONResponse,
     response_model_include={'origin', 'headers', 'method', 'extras'},
-    response_description='Defalte-encoded data.'
+    response_description='Defalte-encoded data.',
 )
 async def deflate_encoded_content(request: Request):
     info = await to_request_info(request, deflated=True)
@@ -57,10 +58,7 @@ async def deflate_encoded_content(request: Request):
 
 
 @router.get(
-    '/gzip',
-    response_model=RequestInfo,
-    summary='Returns GZip-encoded data.',
-    response_description='GZip-encoded data.'
+    '/gzip', response_model=RequestInfo, summary='Returns GZip-encoded data.', response_description='GZip-encoded data.'
 )
 async def gzip_encoded_content(request: Request):
     info = await to_request_info(request, gzipped=True)
@@ -76,13 +74,10 @@ async def gzip_encoded_content(request: Request):
     '/deny',
     response_class=PlainTextResponse,
     summary='Returns page denied by robots.txt rules.',
-    response_description='Denied message'
+    response_description='Denied message',
 )
 async def deny_page():
-    response = PlainTextResponse(
-        content=ANGRY_ASCII,
-        status_code=status.HTTP_403_FORBIDDEN
-    )
+    response = PlainTextResponse(content=ANGRY_ASCII, status_code=status.HTTP_403_FORBIDDEN)
     return response
 
 
@@ -90,7 +85,7 @@ async def deny_page():
     '/encoding/utf8',
     response_class=PlainTextResponse,
     summary='Returns a UTF-8 encoded body.',
-    response_description='Encoded UTF-8 content.'
+    response_description='Encoded UTF-8 content.',
 )
 async def encoding_utf8():
     # UTF-8 demo content
@@ -102,12 +97,9 @@ async def encoding_utf8():
     '/html',
     response_class=HTMLResponse,
     summary='Returns a simple HTML document.',
-    response_description='An HTML page.'
+    response_description='An HTML page.',
 )
-async def html_page(
-        request: Request,
-        templates: Jinja2Templates = Depends(get_templates)
-):
+async def html_page(request: Request, templates: Jinja2Templates = Depends(get_templates)):
     return templates.TemplateResponse(
         'moby.html',
         context={'request': request},
@@ -118,7 +110,7 @@ async def html_page(
     '/json',
     response_class=JSONResponse,
     summary='Returns a simple JSON document.',
-    response_description='An JSON document.'
+    response_description='An JSON document.',
 )
 async def json_endpoint():
     json_doc = {
@@ -144,7 +136,7 @@ async def json_endpoint():
     '/robot.txt',
     response_class=PlainTextResponse,
     summary='Returns some robots.txt rules.',
-    response_description='Robots file'
+    response_description='Robots file',
 )
 async def robots_page():
     response = PlainTextResponse(content=ROBOT_TXT)
@@ -152,17 +144,7 @@ async def robots_page():
 
 
 @router.get(
-    '/xml',
-    response_class=Response,
-    summary='Returns a simple XML document.',
-    response_description='An XML document.'
+    '/xml', response_class=Response, summary='Returns a simple XML document.', response_description='An XML document.'
 )
-async def xml(
-        request: Request,
-        templates: Jinja2Templates = Depends(get_templates)
-):
-    return templates.TemplateResponse(
-        'sample.xml',
-        context={'request': request},
-        media_type='application/xml'
-    )
+async def xml(request: Request, templates: Jinja2Templates = Depends(get_templates)):
+    return templates.TemplateResponse('sample.xml', context={'request': request}, media_type='application/xml')
