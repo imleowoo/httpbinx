@@ -45,15 +45,6 @@ Homepage = "https://github.com/imleowoo/httpbinx"
 # Documentation = ""
 Repository = "https://github.com/imleowoo/httpbinx"
 
-[project.optional-dependencies]
-test = [
-    "httpx",
-    "pytest-cov",
-    "pytest-mock",
-    "pytest-xdist",
-    "pytest",
-]
-
 [tool.pdm]
 version = { source = "file", path = "httpbinx/__init__.py" }
 distribution = true
@@ -61,14 +52,10 @@ distribution = true
 [tool.ruff]
 target-version = "py314"
 line-length = 120
-exclude = ["*_pb2*.py", "*.pb2.py", "anyproto", "commonproto", "taskpool"]
 
 [tool.ruff.lint]
 select = ["F", "E", "W", "I", "N", "D101"]
 ignore = []
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*" = ["F401", "F811", "I001"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -78,5 +65,10 @@ quote-style = "single"
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.12",
+    "ruff",
+    "httpx",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pytest",
 ]
