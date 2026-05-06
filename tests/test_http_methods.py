@@ -1,36 +1,83 @@
-"""
-Tag: HTTP Methods
-"""
+"""Tag: HTTP Methods"""
 
 import json
 from datetime import datetime
 
-from fastapi.testclient import TestClient
 from starlette import status
 
-from httpbinx import app
 
-client = TestClient(app)
+class TestGet:
+    """Tests for GET /get."""
+
+    def test_status(self, client):
+        response = client.get('/get')
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_response_fields(self, client):
+        response = client.get('/get')
+        data = response.json()
+        assert data['url'].endswith('/get')
+        assert 'headers' in data
+        assert 'args' in data
+        assert 'origin' in data
+
+    def test_with_query_params(self, client):
+        response = client.get('/get?foo=bar&baz=1')
+        assert response.json()['args'] == {'foo': 'bar', 'baz': '1'}
 
 
-def test_get():
-    response = client.get('/get')
-    assert response.status_code == status.HTTP_200_OK
-    # assert response.json()['origin'] == 'testclient'
+class TestPost:
+    """Tests for POST /post."""
+
+    def test_string_body(self, client):
+        content = b'httpbinx'
+        response = client.post('/post', content=content)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['data'] == content.decode()
+
+    def test_form_data(self, client):
+        data = {'name': 'Albert Einstein', 'age': str(datetime.now().year - 1879)}
+        response = client.post('/post', data=data)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['form'] == data
+
+    def test_json(self, client):
+        data = {'name': 'Albert Einstein', 'age': str(datetime.now().year - 1879)}
+        response = client.post('/post', json=data)
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['json'] == json.dumps(data)
 
 
-def test_post():
-    data = {'name': 'Albert Einstein', 'age': str(datetime.now().year - 1879)}
-    # string or bytes
-    str_or_bytes = b'httpbinx'
-    response = client.post('/post', content=str_or_bytes)
-    target = str_or_bytes.decode() if isinstance(str_or_bytes, bytes) else str_or_bytes
-    assert response.json()['data'] == target
+class TestPut:
+    """Tests for PUT /put."""
 
-    # application/x-www-form-urlencoded
-    response = client.post('/post', data=data.copy())
-    assert response.json()['form'] == data
+    def test_basic(self, client):
+        response = client.put('/put', json={'key': 'value'})
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['method'] == 'PUT'
 
-    # application/json
-    response = client.post('/post', json=data.copy())
-    assert response.json()['json'] == json.dumps(data)
+    def test_with_body(self, client):
+        response = client.put('/put', json={'key': 'value'})
+        assert response.json()['json'] == json.dumps({'key': 'value'})
+
+
+class TestDelete:
+    """Tests for DELETE /delete."""
+
+    def test_basic(self, client):
+        response = client.delete('/delete')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['method'] == 'DELETE'
+
+
+class TestPatch:
+    """Tests for PATCH /patch."""
+
+    def test_basic(self, client):
+        response = client.patch('/patch', json={'patch': 'data'})
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['method'] == 'PATCH'
+
+    def test_with_body(self, client):
+        response = client.patch('/patch', json={'patch': 'data'})
+        assert response.json()['json'] == json.dumps({'patch': 'data'})
