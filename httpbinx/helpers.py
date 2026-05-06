@@ -12,7 +12,7 @@ from httpbinx.constants import ACCEPTED_MEDIA_TYPES, ASCII_ART, REDIRECT_LOCATIO
 from httpbinx.schemas import RequestAttrs, RequestInfo
 
 # init Jinja2
-_templates = Jinja2Templates(directory='templates')
+_templates = Jinja2Templates(directory=str(Path(__file__).parent / 'templates'))
 # image path
 _images_path = Path(__file__).parent / 'static' / 'images'
 # bomb files path
