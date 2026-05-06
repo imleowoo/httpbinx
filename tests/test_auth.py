@@ -1,8 +1,8 @@
 """Tag: Auth"""
 
-import pytest
 from base64 import b64encode
 
+import pytest
 from starlette import status
 
 
