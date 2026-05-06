@@ -101,6 +101,7 @@ async def encoding_utf8():
 )
 async def html_page(request: Request, templates: Jinja2Templates = Depends(get_templates)):
     return templates.TemplateResponse(
+        request,
         'moby.html',
         context={'request': request},
     )
@@ -147,4 +148,4 @@ async def robots_page():
     '/xml', response_class=Response, summary='Returns a simple XML document.', response_description='An XML document.'
 )
 async def xml(request: Request, templates: Jinja2Templates = Depends(get_templates)):
-    return templates.TemplateResponse('sample.xml', context={'request': request}, media_type='application/xml')
+    return templates.TemplateResponse(request, 'sample.xml', context={'request': request}, media_type='application/xml')
