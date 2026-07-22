@@ -12,8 +12,10 @@
 约束：
 - 保持构建后端 pdm-backend 不变。
 - 保持 CI 工作流、Dockerfile 的安装与运行方式不变。
-- 保持包内代码零改动。
+- 保持包内业务代码零改动（唯一例外：版本号 bump，见 6.7）。
 - 保持测试目录位置不变（仍为顶层 `tests/`）。
+
+附带变更：将 `__version__` 由 `1.10.2` 升至 `1.11.0`，随 src-layout 迁移一并发布。
 
 ## 2. 现状摘要
 
@@ -102,7 +104,8 @@ httpbinx/                       # 仓库根
 - `image.yml`：Docker 构建上下文不变。
 
 ### 6.7 代码
-- 零改动。`helpers.py`/`main.py` 的 `Path(__file__).parent / ...` 在新位置仍指向 `src/httpbinx/static` 与 `templates`。
+- 唯一改动：`src/httpbinx/__init__.py` 中 `__version__ = '1.10.2'` → `'1.11.0'`。
+- 其余零改动。`helpers.py`/`main.py` 的 `Path(__file__).parent / ...` 在新位置仍指向 `src/httpbinx/static` 与 `templates`。
 
 ### 6.8 可选加固
 - `pyproject.toml` 增加：
@@ -121,7 +124,7 @@ httpbinx/                       # 仓库根
 5. 构建：`uv build` 产出 sdist + wheel。
 6. 解包验证 wheel：
    - `httpbinx/__init__.py`、`httpbinx/static/favicon.png`、`httpbinx/templates/moby.html`、`httpbinx/templates/sample.xml` 均在 wheel 内；
-   - `*.dist-info/METADATA` 中 `Version: 1.10.2`；
+   - `*.dist-info/METADATA` 中 `Version: 1.11.0`；
    - `*.dist-info/entry_points.txt` 含 `httpbinx = httpbinx.cli:execute`。
 7. （可选）`docker build` 验证镜像可构建并启动。
 
