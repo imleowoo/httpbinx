@@ -46,7 +46,8 @@ Homepage = "https://github.com/imleowoo/httpbinx"
 Repository = "https://github.com/imleowoo/httpbinx"
 
 [tool.pdm]
-version = { source = "file", path = "httpbinx/__init__.py" }
+version = { source = "file", path = "src/httpbinx/__init__.py" }
+package-dir = "src"
 distribution = true
 
 [tool.ruff]
