@@ -1,4 +1,4 @@
-![![cover](httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/httpbinx/static/images/httpbinx_cover.png)
+![![cover](src/httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/src/httpbinx/static/images/httpbinx_cover.png)
 
 [![thanks](https://img.shields.io/badge/thanks-httpbin-green)](https://github.com/postmanlabs/httpbin)
 ![python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)

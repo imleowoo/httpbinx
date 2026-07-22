@@ -1,1 +1,1 @@
-recursive-include httpbinx *
+recursive-include src/httpbinx *
