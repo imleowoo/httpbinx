@@ -135,3 +135,6 @@ temp/
 
 # VS Code configuration file
 .vscode/
+
+# Local-only Claude guidance (not committed)
+*.local.md
