@@ -23,6 +23,14 @@ class TestBase64:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'Incorrect Base64 data' in response.text
 
+    def test_valid_base64_non_utf8_bytes(self, client):
+        # 'vO2Tie4=' is valid base64url that decodes to bytes which are not
+        # valid UTF-8. The decode('utf-8') step used to raise UnicodeDecodeError
+        # and bubble up as a 500 instead of the intended 400.
+        response = client.get('/base64/vO2Tie4=')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert 'Incorrect Base64 data' in response.text
+
 
 class TestBytes:
     """Tests for the /bytes endpoint."""

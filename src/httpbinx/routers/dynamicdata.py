@@ -43,7 +43,7 @@ async def decode_base64(
     try:
         decoded = base64.urlsafe_b64decode(encoded).decode('utf-8')
         return PlainTextResponse(content=decoded)
-    except binascii.Error as err:
+    except (binascii.Error, UnicodeDecodeError) as err:
         return PlainTextResponse(
             content=f'Incorrect Base64 data: {value}, err_msg: {err}', status_code=status.HTTP_400_BAD_REQUEST
         )
