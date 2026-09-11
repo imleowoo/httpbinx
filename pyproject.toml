@@ -18,16 +18,11 @@ dependencies = [
     "python-multipart"
 ]
 
-# Author information
 authors = [{ name = "Leo", email = "imleowoo@outlook.com" }]
-maintainers = [{ name = "Leo", email = "imleowoo@outlook.com" }]
 
-# License
 license = { file = "LICENSE" }
 
-# Classifiers
 classifiers = [
-    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -68,8 +63,5 @@ quote-style = "single"
 dev = [
     "ruff",
     "httpx",
-    "pytest-cov",
-    "pytest-mock",
-    "pytest-xdist",
     "pytest",
 ]
