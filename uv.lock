@@ -182,7 +182,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "brotli" },
-    { name = "fastapi" },
+    { name = "fastapi", specifier = ">=0.115.0" },
     { name = "jinja2" },
     { name = "pydantic" },
     { name = "python-multipart" },

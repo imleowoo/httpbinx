@@ -21,12 +21,35 @@ class BombTypes(str, Enum):
 bombs_path: Path = get_bomb_file_path()
 
 
-@router.api_route(
-    '/anything',  # TODO path regex
+@router.get(
+    '/anything',
     response_model=RequestInfo,
     summary='Returns anything passed in request data.',
     response_description='Anything passed in request',
-    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
+)
+@router.post(
+    '/anything',
+    response_model=RequestInfo,
+    summary='Returns anything passed in request data.',
+    response_description='Anything passed in request',
+)
+@router.put(
+    '/anything',
+    response_model=RequestInfo,
+    summary='Returns anything passed in request data.',
+    response_description='Anything passed in request',
+)
+@router.delete(
+    '/anything',
+    response_model=RequestInfo,
+    summary='Returns anything passed in request data.',
+    response_description='Anything passed in request',
+)
+@router.patch(
+    '/anything',
+    response_model=RequestInfo,
+    summary='Returns anything passed in request data.',
+    response_description='Anything passed in request',
 )
 async def anything(request: Request):
     return await to_request_info(request)

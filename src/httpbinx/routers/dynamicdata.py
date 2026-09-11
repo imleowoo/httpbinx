@@ -67,9 +67,32 @@ async def random_bytes(
     return OctetStreamResponse(content=content)  # TODO use StreamingResponse
 
 
-@router.api_route(
+@router.get(
     '/delay/{delay}',
-    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
+    response_model=RequestInfo,
+    summary='Returns a delayed response (max of 10 seconds).',
+    response_description='A delayed response.',
+)
+@router.post(
+    '/delay/{delay}',
+    response_model=RequestInfo,
+    summary='Returns a delayed response (max of 10 seconds).',
+    response_description='A delayed response.',
+)
+@router.put(
+    '/delay/{delay}',
+    response_model=RequestInfo,
+    summary='Returns a delayed response (max of 10 seconds).',
+    response_description='A delayed response.',
+)
+@router.delete(
+    '/delay/{delay}',
+    response_model=RequestInfo,
+    summary='Returns a delayed response (max of 10 seconds).',
+    response_description='A delayed response.',
+)
+@router.patch(
+    '/delay/{delay}',
     response_model=RequestInfo,
     summary='Returns a delayed response (max of 10 seconds).',
     response_description='A delayed response.',

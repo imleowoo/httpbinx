@@ -9,7 +9,7 @@ description = "HTTP Request & Response Service, written in Python + FastAPI."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "fastapi",
+    "fastapi>=0.115.0",
     "pydantic",
     "uvicorn",
     "starlette",

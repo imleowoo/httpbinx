@@ -28,9 +28,32 @@ async def absolute_redirect_n_times(*, n: int = Path(..., title='Redirects n tim
     return _redirect(request, type_=RedirectTypes.ABSOLUTE, n=n)
 
 
-@router.api_route(
+@router.get(
     '/redirect-to',
-    methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'],
+    summary='302/3XX Redirects to the given URL.',
+    response_description='A redirection.',
+    response_class=Response,
+)
+@router.post(
+    '/redirect-to',
+    summary='302/3XX Redirects to the given URL.',
+    response_description='A redirection.',
+    response_class=Response,
+)
+@router.put(
+    '/redirect-to',
+    summary='302/3XX Redirects to the given URL.',
+    response_description='A redirection.',
+    response_class=Response,
+)
+@router.delete(
+    '/redirect-to',
+    summary='302/3XX Redirects to the given URL.',
+    response_description='A redirection.',
+    response_class=Response,
+)
+@router.patch(
+    '/redirect-to',
     summary='302/3XX Redirects to the given URL.',
     response_description='A redirection.',
     response_class=Response,
