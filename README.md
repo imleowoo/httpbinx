@@ -1,60 +1,65 @@
-![![cover](src/httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/src/httpbinx/static/images/httpbinx_cover.png)
+![httpbinx cover](src/httpbinx/static/images/httpbinx_cover.png)
 
-[![thanks](https://img.shields.io/badge/thanks-httpbin-green)](https://github.com/postmanlabs/httpbin)
-![python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)
+[![PyPI](https://img.shields.io/pypi/v/httpbinx)](https://pypi.org/project/httpbinx/)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)](https://pypi.org/project/httpbinx/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![中文文档](https://img.shields.io/badge/Language-%E4%B8%AD%E6%96%87-red)](README.zh.md)
 
 # httpbinx
 
-HTTP Request & Response Service, written in Python + FastAPI.
+An HTTP request and response testing service built with Python and FastAPI.
+Inspired by [httpbin](https://github.com/postmanlabs/httpbin).
 
-## Deployed at:
+Try the hosted instance at **https://httpbinx.wooe.cc**.
 
-- **https://httpbinx.wooe.cc**
+## Install
 
-## Reference Project
+Requires Python 3.10 or later.
 
-A [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.com/postmanlabs/httpbin
-
-## Quick Start
-
-## Installation
-
-### PyPI
-
-**[httpbinx](https://pypi.org/project/httpbinx/)** is available on PyPI
+With pip:
 
 ```shell
-$ pip install httpbinx
+pip install httpbinx
 ```
 
-### Source Code
+With uv:
 
 ```shell
-$ git clone https://github.com/imleowoo/httpbinx.git
-$ python setup.py install # or `pip install .`
+uv tool install httpbinx
 ```
 
-## Run it
-
-### Run directly
+## Run Locally
 
 ```shell
-$ httpbinx server --host=0.0.0.0 --port=80
+httpbinx server --port 8000
 ```
 
-### Run with Docker
+Open [http://localhost:8000/](http://localhost:8000/) for the interactive API documentation.
+
+## Docker
 
 ```shell
-$ docker pull leowoo/httpbinx:latest
-$ docker run -p 80:80 --name httpbinx leowoo/httpbinx:latest
+docker pull leowoo/httpbinx:latest
+docker run --rm -p 8080:80 --name httpbinx leowoo/httpbinx:latest
 ```
 
-### It starts running
+The API documentation is then available at [http://localhost:8080/](http://localhost:8080/).
 
-```text
-INFO:     Started server process [17044]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)
-...
+## CLI
+
+```shell
+httpbinx version
+httpbinx info
 ```
+
+## Development
+
+```shell
+pytest
+ruff check .
+ruff format --check .
+```
+
+## License
+
+[MIT](LICENSE)
