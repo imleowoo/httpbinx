@@ -7,10 +7,15 @@ class TestAnything:
     """Tests for the /anything endpoint."""
 
     def test_all_methods(self, client):
-        for method in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE']:
+        for method in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']:
             response = client.request(method=method, url='/anything')
             assert response.status_code == status.HTTP_200_OK
             assert response.json()['method'] == method
+
+    def test_trace_is_not_allowed(self, client):
+        response = client.request(method='TRACE', url='/anything')
+
+        assert response.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
 
     def test_with_body(self, client):
         response = client.post('/anything', json={'hello': 'world'})
