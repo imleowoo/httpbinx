@@ -4,7 +4,6 @@ These tags are used to organize and categorize different endpoints in the API do
 """
 
 from functools import lru_cache
-from typing import List
 
 from pydantic import BaseModel, Field
 
@@ -19,7 +18,7 @@ class Tag(BaseModel):
 class TagsMetadata(BaseModel):
     """Container for a list of API tags."""
 
-    tags: List[Tag] = Field(..., description='List of API tags')
+    tags: list[Tag] = Field(..., description='List of API tags')
 
 
 TAGS_METADATA = TagsMetadata(
@@ -40,7 +39,7 @@ TAGS_METADATA = TagsMetadata(
 
 
 @lru_cache
-def get_tags_metadata() -> List[dict]:
+def get_tags_metadata() -> list[dict]:
     """
     Returns the tags metadata in the format expected by FastAPI.
     """

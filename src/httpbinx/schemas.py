@@ -1,7 +1,7 @@
 import json
 from enum import Enum
 from functools import lru_cache
-from typing import AnyStr, Dict, Union
+from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, Field
 from starlette.requests import Request
@@ -33,15 +33,15 @@ class RequestInfo(BaseModel):
     """
 
     url: AnyHttpUrl = Field(title='Request URL')
-    args: Dict = Field(default_factory=dict, title='Request Args')
-    headers: Dict = Field(default_factory=dict, title='Request Headers')
-    origin: AnyStr = Field('', title="Client's IP")
-    form: Dict = Field(default_factory=dict, title='Request Form')
-    data: Union[str, bytes] = Field(b'', title='Request Data')
-    files: Dict = Field(default_factory=dict, title='Upload Files')
-    json_data: AnyStr = Field('', alias='json', title='Content-Type: application/json', description='serialized')
+    args: dict[str, Any] = Field(default_factory=dict, title='Request Args')
+    headers: dict[str, str] = Field(default_factory=dict, title='Request Headers')
+    origin: str = Field('', title="Client's IP")
+    form: dict[str, Any] = Field(default_factory=dict, title='Request Form')
+    data: str | bytes = Field(b'', title='Request Data')
+    files: dict[str, Any] = Field(default_factory=dict, title='Upload Files')
+    json_data: str = Field('', alias='json', title='Content-Type: application/json', description='serialized')
     method: HTTPMethod = Field(HTTPMethod.get, title='HTTP Request Method')
-    extras: Dict = Field(default_factory=dict, title='The Other Information')
+    extras: dict[str, Any] = Field(default_factory=dict, title='The Other Information')
 
     @classmethod
     def get_properties(cls):
@@ -49,7 +49,7 @@ class RequestInfo(BaseModel):
 
         @lru_cache
         def properties():
-            return tuple(cls.schema()['properties'].keys())
+            return tuple(cls.model_json_schema()['properties'].keys())
 
         return properties()
 
@@ -81,11 +81,14 @@ class RequestAttrs:
         If there are more than one value
         for a key, the result will have a list of values for the key.
         Otherwise it will have the plain value."""
-        out = dict()
+        out = {}
         for k, v in self.request.query_params.multi_items():
-            exist = out.get(k)
-            if exist:
-                out[k] = exist.append(v) if isinstance(exist, list) else [exist, v]
+            if k in out:
+                existing = out[k]
+                if isinstance(existing, list):
+                    existing.append(v)
+                else:
+                    out[k] = [existing, v]
             else:
                 out[k] = v
         return out
