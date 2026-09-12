@@ -44,6 +44,14 @@ def test_image_accept_not_acceptable(client):
     assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
 
 
+def test_image_without_accept_header_is_not_acceptable(client):
+    client.headers.pop('accept')
+
+    response = client.get('/image')
+
+    assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
+
+
 def test_image_png(client):
     response = client.get('/image/png')
     assert response.status_code == status.HTTP_200_OK

@@ -28,8 +28,7 @@ router = APIRouter(tags=['Images'], default_response_class=ImageResponse)
     response_description='An image.',
 )
 async def image(request: Request):
-    accept = request.headers.get('accept')
-    accept = accept.lower()
+    accept = (request.headers.get('accept') or '').lower()
     if 'image/webp' in accept:
         return await image_webp()
     elif 'image/svg+xml' in accept:
