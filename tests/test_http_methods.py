@@ -25,6 +25,10 @@ class TestGet:
         response = client.get('/get?foo=bar&baz=1')
         assert response.json()['args'] == {'foo': 'bar', 'baz': '1'}
 
+    def test_with_repeated_query_params(self, client):
+        response = client.get('/get?tag=python&tag=fastapi&tag=pydantic')
+        assert response.json()['args'] == {'tag': ['python', 'fastapi', 'pydantic']}
+
 
 class TestPost:
     """Tests for POST /post."""
