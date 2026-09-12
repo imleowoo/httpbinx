@@ -135,6 +135,7 @@ temp/
 
 # VS Code configuration file
 .vscode/
+.worktrees/
 
 # Local-only Claude guidance (not committed)
 *.local.md
