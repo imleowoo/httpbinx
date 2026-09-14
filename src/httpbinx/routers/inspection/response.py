@@ -1,7 +1,7 @@
 import uuid
 from email.utils import formatdate
 
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, Response
 from starlette import status
 from starlette.requests import Request
 
@@ -19,14 +19,13 @@ router = APIRouter(
     ' is present. Returns the same as a GET otherwise.',
     response_description='TODO',
 )
-async def cache(request: Request):
+async def cache(request: Request, response: Response):
     # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Modified-Since
     is_conditional = request.headers.get('If-Modified-Since') or request.headers.get('If-None-Match')
     if is_conditional is None:
-        response = await httpmethods.get(request)
         response.headers['Last-Modified'] = formatdate()
         response.headers['ETag'] = uuid.uuid4().hex
-        return response
+        return await httpmethods.get(request)
     else:
         return status_code_response(status.HTTP_304_NOT_MODIFIED)
 
@@ -34,17 +33,18 @@ async def cache(request: Request):
 @router.get(
     '/cache/{value}', summary='Sets a Cache-Control header for n seconds.', response_description='Cache control set'
 )
-async def cache_control(*, value: int = Path(..., title='Cache-Control max-age value'), request: Request):
-    response = await httpmethods.get(request)
+async def cache_control(
+    *, value: int = Path(..., title='Cache-Control max-age value'), request: Request, response: Response
+):
     response.headers['Cache-Control'] = f'public, max-age={value}'
-    return response
+    return await httpmethods.get(request)
 
 
 @router.get(
     '/etag/{etag}',
     summary='Assumes the resource has the given etag and responds to If-None-Match and If-Match headers appropriately.',
 )
-async def set_etag(*, etag: str = Path(..., title='ETag value'), request: Request):
+async def set_etag(*, etag: str = Path(..., title='ETag value'), request: Request, response: Response):
     # TODO set If-None-Match
     # https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-None-Match
     if_none_match = parse_multi_value_header(request.headers.get('If-None-Match'))
@@ -59,9 +59,8 @@ async def set_etag(*, etag: str = Path(..., title='ETag value'), request: Reques
         if etag not in if_match and '*' not in if_match:
             return status_code_response(status.HTTP_412_PRECONDITION_FAILED)
     # Special cases don't apply, return normal response
-    response = await httpmethods.get(request)
     response.headers['ETag'] = etag
-    return response
+    return await httpmethods.get(request)
 
 
 @router.api_route(
