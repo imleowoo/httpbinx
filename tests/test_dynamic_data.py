@@ -65,6 +65,45 @@ class TestDrip:
         assert response.status_code == status.HTTP_200_OK
         assert len(response.content) == 5
 
+    def test_respects_duration(self, client):
+        duration = 0.2
+        start = time.time()
+        response = client.get(f'/drip?duration={duration}&numbytes=10&delay=0')
+        elapsed = time.time() - start
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.content) == 10
+        assert elapsed >= duration
+
+    def test_large_numbytes_is_paced(self, client):
+        duration = 0.2
+        numbytes = 100_000
+        start = time.time()
+        response = client.get(f'/drip?duration={duration}&numbytes={numbytes}&delay=0')
+        elapsed = time.time() - start
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.content) == numbytes
+        assert elapsed >= duration
+
+    def test_large_numbytes_drips_without_per_byte_sleeps(self, client, monkeypatch):
+        import asyncio as asyncio_module
+        import types
+
+        from httpbinx.routers import dynamicdata
+
+        delays = []
+
+        async def fake_sleep(delay):
+            delays.append(delay)
+            await asyncio_module.sleep(0)
+
+        monkeypatch.setattr(dynamicdata, 'asyncio', types.SimpleNamespace(sleep=fake_sleep))
+
+        response = client.get('/drip?duration=1&numbytes=100_000&delay=0')
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.content) == 100_000
+        # One sleep for the initial delay plus a bounded number of chunk sleeps.
+        assert len(delays) <= 101
+
 
 class TestLinks:
     """Tests for the /links endpoint."""
