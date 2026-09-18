@@ -3,6 +3,7 @@
 import asyncio
 import base64
 import binascii
+import math
 import random
 import uuid
 
@@ -17,6 +18,10 @@ from httpbinx.helpers import to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter(tags=['Dynamic data'])
+
+# Upper bound on the number of chunks /drip yields so large payloads keep a
+# meaningful pause between chunks instead of sleeping once per byte.
+DRIP_MAX_CHUNKS = 100
 
 
 class OctetStreamResponse(Response):
@@ -109,7 +114,7 @@ async def delay_response(*, delay: float = Path(..., ge=0, le=10, description='d
     response_description='A dripped response.',
 )
 async def drip(
-    duration: float = Query(default=2, description='The amount of time (in seconds) over which to drip each byte'),
+    duration: float = Query(default=2, description='The amount of time (in seconds) over which to drip the response'),
     numbytes: int = Query(
         default=10,
         gt=0,
@@ -120,12 +125,19 @@ async def drip(
     delay: float = Query(default=2, ge=0, description='The amount of time (in seconds) to delay before responding'),
 ):
     await asyncio.sleep(delay)
+    # Drip in chunks so large `numbytes` do not turn into a burst of zero-length
+    # sleeps. The whole payload is paced over `duration` regardless of `numbytes`.
+    chunk_size = max(1, math.ceil(numbytes / DRIP_MAX_CHUNKS))
+    num_chunks = math.ceil(numbytes / chunk_size)
     # Number of seconds to pause during each data generation
-    pause = int(duration / numbytes)
+    pause = duration / num_chunks
 
     async def generate_content():
-        for _ in range(numbytes):
-            yield b'*'
+        remaining = numbytes
+        while remaining > 0:
+            chunk = min(chunk_size, remaining)
+            remaining -= chunk
+            yield b'*' * chunk
             await asyncio.sleep(pause)
 
     return StreamingResponse(content=generate_content(), media_type='application/octet-stream', status_code=code)
