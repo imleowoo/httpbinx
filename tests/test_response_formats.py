@@ -83,14 +83,33 @@ class TestJson:
         assert len(data['slides']) == 2
 
 
-class TestRobot:
-    """Tests for the /robot.txt endpoint."""
+class TestLegacy:
+    """Tests for the /legacy landing page endpoint."""
 
-    def test_content(self, client):
-        response = client.get('/robot.txt')
+    def test_ok_and_html(self, client):
+        response = client.get('/legacy')
         assert response.status_code == status.HTTP_200_OK
+        assert response.headers['content-type'].startswith('text/html')
+
+    def test_lists_endpoints(self, client):
+        response = client.get('/legacy')
+        assert '/get' in response.text
+        assert '/robots.txt' in response.text
+
+
+class TestRobots:
+    """Tests for the /robots.txt endpoint."""
+
+    def test_canonical_route(self, client):
+        response = client.get('/robots.txt')
+        assert response.status_code == status.HTTP_200_OK
+        assert response.headers['content-type'].startswith('text/plain')
         assert 'User-agent' in response.text
         assert 'Disallow' in response.text
+
+    def test_nonstandard_robot_txt_is_gone(self, client):
+        response = client.get('/robot.txt')
+        assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 @pytest.mark.skip(reason='Endpoint uses CWD-relative path to templates (source bug)')

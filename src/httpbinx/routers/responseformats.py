@@ -134,14 +134,34 @@ async def json_endpoint():
 
 
 @router.get(
-    '/robot.txt',
+    '/legacy',
+    response_class=HTMLResponse,
+    summary='Returns the legacy landing page.',
+    response_description='An HTML page listing the available endpoints.',
+)
+async def legacy_page(request: Request, templates: Jinja2Templates = Depends(get_templates)):
+    schema = request.app.openapi()
+    endpoints = []
+    for path, methods in sorted(schema.get('paths', {}).items()):
+        for method, operation in methods.items():
+            if method.upper() not in {'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'}:
+                continue
+            endpoints.append({'method': method.upper(), 'path': path, 'summary': operation.get('summary', '')})
+    return templates.TemplateResponse(
+        request,
+        'legacy.html',
+        context={'request': request, 'endpoints': endpoints},
+    )
+
+
+@router.get(
+    '/robots.txt',
     response_class=PlainTextResponse,
     summary='Returns some robots.txt rules.',
     response_description='Robots file',
 )
 async def robots_page():
-    response = PlainTextResponse(content=ROBOT_TXT)
-    return response
+    return PlainTextResponse(content=ROBOT_TXT)
 
 
 @router.get(
