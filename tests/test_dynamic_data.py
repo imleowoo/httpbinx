@@ -1,5 +1,6 @@
 """Tag: Dynamic Data"""
 
+import random
 import time
 import uuid
 from base64 import b64encode
@@ -43,6 +44,13 @@ class TestBytes:
         n = 2**10 * 1000
         response = client.get(f'/bytes/{n}')
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
+
+    def test_seed_does_not_leak_global_state(self, client):
+        random.seed(0)
+        baseline = bytes(random.randint(0, 255) for _ in range(16))
+        random.seed(0)
+        client.get('/bytes/16?seed=999')
+        assert bytes(random.randint(0, 255) for _ in range(16)) == baseline
 
 
 class TestDelay:
@@ -137,6 +145,13 @@ class TestStreamBytes:
         response_a = client.get(f'/stream-bytes/{n}?seed=42')
         response_b = client.get(f'/stream-bytes/{n}?seed=42')
         assert response_a.content == response_b.content
+
+    def test_seed_does_not_leak_global_state(self, client):
+        random.seed(0)
+        baseline = bytes(random.randint(0, 255) for _ in range(16))
+        random.seed(0)
+        client.get('/stream-bytes/16?seed=999')
+        assert bytes(random.randint(0, 255) for _ in range(16)) == baseline
 
 
 class TestUuid:

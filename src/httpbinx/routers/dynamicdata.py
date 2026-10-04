@@ -64,11 +64,11 @@ async def random_bytes(
     n: int = Path(..., title='binary file size', gt=0, lt=100 * 1024),  # set 100KB limit
     seed: int = Query(None, title='random seed', description='Initialize the random number generator'),
 ):
-    if seed is not None:
-        random.seed(seed)
-    # Note: can't just use os.urandom here because it ignores the seed
-    # https://docs.python.org/3/library/random.html?highlight=random%20seed#random.seed
-    content = bytes(random.randint(0, 255) for _ in range(n))
+    # Use a private generator so seeding does not leak into the shared module
+    # state (which would make unrelated requests order-dependent).
+    # Note: can't just use os.urandom here because it ignores the seed.
+    rng = random.Random(seed)
+    content = bytes(rng.randint(0, 255) for _ in range(n))
     return OctetStreamResponse(content=content)  # TODO use StreamingResponse
 
 
@@ -207,13 +207,14 @@ async def stream_random_bytes(
     seed: int = Query(default=None, ge=0),
     chunk_size: int = Query(default=10 * 1024, ge=1, le=10 * 1024),
 ):
-    if seed is not None:
-        random.seed(seed)
+    # Use a private generator so seeding does not leak into the shared module
+    # state (which would make unrelated requests order-dependent).
+    rng = random.Random(seed)
 
     def generate_bytes():
         chunks = bytearray()
         for i in range(n):
-            chunks.append(random.randint(0, 255))
+            chunks.append(rng.randint(0, 255))
             if len(chunks) == chunk_size:
                 yield bytes(chunks)
                 chunks.clear()
