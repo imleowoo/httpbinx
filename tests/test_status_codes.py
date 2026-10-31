@@ -2,6 +2,7 @@
 
 from urllib import parse
 
+import pytest
 from starlette import status
 
 
@@ -35,3 +36,21 @@ def test_status_code_non_numeric(client):
 def test_status_code_single(client):
     response = client.get('/status/201')
     assert response.status_code == status.HTTP_201_CREATED
+
+
+@pytest.mark.parametrize('weight', ['0', '-1', 'nan', 'inf', '-inf'])
+def test_status_code_rejects_nonpositive_or_nonfinite_weights(client, weight):
+    response = client.get(f'/status/200:{weight},201:1')
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.text == 'Invalid status code'
+
+
+def test_status_code_accepts_fractional_weights(client):
+    response = client.get('/status/200:0.5,201:0.5')
+    assert response.status_code in [status.HTTP_200_OK, status.HTTP_201_CREATED]
+
+
+def test_status_code_rejects_nonfinite_total_weight(client):
+    response = client.get('/status/200:1e308,201:1e308')
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.text == 'Invalid status code'
