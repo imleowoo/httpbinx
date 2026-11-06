@@ -2,6 +2,7 @@
 
 import gzip
 import zlib
+from pathlib import Path
 
 import brotli
 from fastapi import APIRouter, Depends
@@ -17,6 +18,8 @@ from httpbinx.helpers import get_templates, to_request_info
 from httpbinx.schemas import RequestInfo
 
 router = APIRouter(tags=['Response formats'])
+
+UTF8_DEMO_PATH = Path(__file__).resolve().parent.parent / 'static' / 'UTF-8-demo.txt'
 
 
 @router.get(
@@ -89,7 +92,7 @@ async def deny_page():
 )
 async def encoding_utf8():
     # UTF-8 demo content
-    with open(file='static/UTF-8-demo.txt', encoding='utf-8') as utf8f:
+    with UTF8_DEMO_PATH.open(encoding='utf-8') as utf8f:
         return PlainTextResponse(content=utf8f.read())
 
 

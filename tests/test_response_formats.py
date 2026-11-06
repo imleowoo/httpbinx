@@ -58,8 +58,8 @@ class TestDeny:
         assert "YOU SHOULDN'T BE HERE" in response.text
 
 
-@pytest.mark.skip(reason='Endpoint uses CWD-relative path to static files (source bug)')
-def test_encoding_utf8(client):
+def test_encoding_utf8(client, monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
     response = client.get('/encoding/utf8')
     assert response.status_code == status.HTTP_200_OK
     assert 'UTF-8' in response.text
